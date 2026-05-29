@@ -237,14 +237,23 @@
             }).join(' ');
             spark = '<svg class="spark" viewBox="0 0 ' + W + ' ' + H + '" preserveAspectRatio="none" aria-hidden="true"><polyline fill="none" stroke="var(--accent)" stroke-width="1.5" points="' + pts + '"/></svg>';
           }
+          var lm = s.lift_maxes || {};
           meronLive.innerHTML =
+            '<div class="ml-h">running</div>' +
             '<div class="stats">' +
               '<div class="stat"><span class="n">' + fmt(s.runs) + '</span><span class="l">runs</span></div>' +
-              '<div class="stat"><span class="n">' + fmt(Math.round(s.run_miles)) + '</span><span class="l">run miles</span></div>' +
-              '<div class="stat"><span class="n">' + (s.longest_run_mi || 0) + '</span><span class="l">longest run · mi</span></div>' +
-              '<div class="stat"><span class="n">' + (s.since || '—') + '</span><span class="l">tracking since</span></div>' +
+              '<div class="stat"><span class="n">' + fmt(Math.round(s.run_miles)) + '</span><span class="l">miles</span></div>' +
+              '<div class="stat"><span class="n">' + (s.longest_run_mi || 0) + '</span><span class="l">longest · mi</span></div>' +
+              '<div class="stat"><span class="n">' + (s.since || '—') + '</span><span class="l">since</span></div>' +
             '</div>' + spark +
-            '<p class="cap"><span class="live-dot"></span>live from the Meron dashboard · weekly miles, last 16 weeks</p>';
+            '<div class="ml-h ml-h2">lifting</div>' +
+            '<div class="stats">' +
+              '<div class="stat"><span class="n">' + fmt(s.lift_sessions) + '</span><span class="l">sessions</span></div>' +
+              '<div class="stat"><span class="n">' + (lm.bench || 0) + '</span><span class="l">bench · lb</span></div>' +
+              '<div class="stat"><span class="n">' + (lm.squat || 0) + '</span><span class="l">squat · lb</span></div>' +
+              '<div class="stat"><span class="n">' + (lm.deadlift || 0) + '</span><span class="l">deadlift · lb</span></div>' +
+            '</div>' +
+            '<p class="cap"><span class="live-dot"></span>live from the Meron dashboard · running &amp; lifting</p>';
         })
         .catch(function () { meronLive.style.display = 'none'; });
     }

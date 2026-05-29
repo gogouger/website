@@ -97,6 +97,8 @@ section{margin-top:46px;}
 .meron-live .stat{display:flex; flex-direction:column;}
 .meron-live .stat .n{font-size:23px; color:var(--ink); font-weight:600; line-height:1.05; font-variant-numeric:tabular-nums;}
 .meron-live .stat .l{font-size:10px; text-transform:uppercase; letter-spacing:.13em; color:var(--muted); margin-top:4px;}
+.meron-live .ml-h{font-size:10px; text-transform:uppercase; letter-spacing:.16em; color:var(--accent); margin:0 0 9px;}
+.meron-live .ml-h2{margin-top:16px;}
 .meron-live .spark{display:block; width:100%; height:46px;}
 .meron-live .cap{font-size:11px; color:var(--muted); font-style:italic; margin:8px 0 0;}
 .meron-live .live-dot{display:inline-block; width:7px; height:7px; border-radius:50%; background:var(--accent); margin-right:6px; box-shadow:0 0 6px var(--accent); vertical-align:middle;}

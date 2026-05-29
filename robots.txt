@@ -1,9 +1,10 @@
 # Gordon Gouger — personal site
-# Ask all crawlers and AI/data-scraping bots to stay out.
+# Search engines welcome; AI / data-scraping bots blocked.
 
 User-agent: *
-Disallow: /
+Allow: /
 
+# AI / LLM / data-scraping crawlers — stay out.
 User-agent: GPTBot
 Disallow: /
 

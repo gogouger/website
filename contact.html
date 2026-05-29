@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="robots" content="noindex, nofollow, noarchive, noimageindex">
+<meta name="robots" content="index, follow, noimageindex">
 <title>Contact — Gordon Gouger</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -34,7 +34,7 @@
     <h1 class="page-title scram">Contact</h1>
     <p class="intro">Have a question, a project in mind, or just want to say hello? Send a note and I'll get back to you.</p>
 
-    <form class="form" action="https://formspree.io/f/REPLACE_ME" method="POST">
+    <form class="form" id="contactForm" action="/contact" method="POST">
       <div class="field">
         <label for="name">Name</label>
         <input id="name" name="name" type="text" autocomplete="name" required>
@@ -48,6 +48,7 @@
         <textarea id="message" name="message" required></textarea>
       </div>
       <button class="btn" type="submit">Send message</button>
+      <p class="form-status" id="contactStatus" role="status" hidden></p>
     </form>
 
     <p class="intro" style="font-size:13px; margin-top:26px;">Prefer LinkedIn? <a href="https://www.linkedin.com/in/gordon-gouger/" target="_blank" rel="noopener">Reach me there &#8594;</a></p>

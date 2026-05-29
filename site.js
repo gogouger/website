@@ -219,6 +219,69 @@
       var ci = 0;
       setInterval(function () { ci = (ci + 1) % states.length; scramble(cur, states[ci], 600); }, 4200);
     }
+
+    /* live Meron telemetry (project page) — safe aggregates via the same-origin
+       /__meron/summary proxy; renders stat cards + a weekly-mileage sparkline. */
+    var meronLive = document.getElementById('meron-live');
+    if (meronLive) {
+      fetch('/__meron/summary', { headers: { 'Accept': 'application/json' } })
+        .then(function (r) { return r.ok ? r.json() : null; })
+        .then(function (s) {
+          if (!s || !s.ok) { meronLive.style.display = 'none'; return; }
+          var fmt = function (n) { return (n || 0).toLocaleString('en-US'); };
+          var weekly = s.weekly_miles || [], spark = '';
+          if (weekly.length > 1) {
+            var max = Math.max.apply(null, weekly) || 1, W = 100, H = 30, n = weekly.length;
+            var pts = weekly.map(function (v, i) {
+              return ((i / (n - 1)) * W).toFixed(1) + ',' + (H - (v / max) * H).toFixed(1);
+            }).join(' ');
+            spark = '<svg class="spark" viewBox="0 0 ' + W + ' ' + H + '" preserveAspectRatio="none" aria-hidden="true"><polyline fill="none" stroke="var(--accent)" stroke-width="1.5" points="' + pts + '"/></svg>';
+          }
+          meronLive.innerHTML =
+            '<div class="stats">' +
+              '<div class="stat"><span class="n">' + fmt(s.runs) + '</span><span class="l">runs</span></div>' +
+              '<div class="stat"><span class="n">' + fmt(Math.round(s.run_miles)) + '</span><span class="l">run miles</span></div>' +
+              '<div class="stat"><span class="n">' + (s.longest_run_mi || 0) + '</span><span class="l">longest run · mi</span></div>' +
+              '<div class="stat"><span class="n">' + (s.since || '—') + '</span><span class="l">tracking since</span></div>' +
+            '</div>' + spark +
+            '<p class="cap"><span class="live-dot"></span>live from the Meron dashboard · weekly miles, last 16 weeks</p>';
+        })
+        .catch(function () { meronLive.style.display = 'none'; });
+    }
+
+    /* contact form — AJAX submit to the self-hosted /contact endpoint */
+    var cform = document.getElementById('contactForm');
+    if (cform) {
+      var cstatus = document.getElementById('contactStatus');
+      var setStatus = function (msg, ok) {
+        if (!cstatus) return;
+        cstatus.hidden = false;
+        cstatus.textContent = msg;
+        cstatus.style.color = ok ? 'var(--accent)' : '#d9534f';
+      };
+      cform.addEventListener('submit', function (e) {
+        e.preventDefault();
+        var btn = cform.querySelector('button[type=submit]');
+        var label = btn.textContent;
+        btn.disabled = true; btn.textContent = 'sending…';
+        fetch('/contact', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+          body: JSON.stringify({ name: cform.name.value, email: cform.email.value, message: cform.message.value })
+        })
+          .then(function (r) { return r.json().then(function (j) { return { ok: r.ok, j: j }; }); })
+          .then(function (res) {
+            if (res.ok && res.j && res.j.ok) {
+              cform.reset();
+              setStatus('Thanks — your message was sent.', true);
+            } else {
+              setStatus((res.j && res.j.error) || 'Something went wrong — try again, or reach me on LinkedIn.', false);
+            }
+          })
+          .catch(function () { setStatus('Network error — try again, or reach me on LinkedIn.', false); })
+          .finally(function () { btn.disabled = false; btn.textContent = label; });
+      });
+    }
   });
 
   /* ---- live Denver clock ---- */

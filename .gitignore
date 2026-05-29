@@ -7,3 +7,11 @@
 # editor
 .vscode/
 .idea/
+
+# résumé — Tectonic build intermediates (only the final Gordon-Gouger-Resume.pdf is tracked)
+resume/resume.pdf
+resume/resume-contact.pdf
+
+# résumé — PRIVATE contact version (email + phone). Never publish to the website.
+resume/resume-contact.tex
+resume/Gordon-Gouger-Resume-contact.pdf

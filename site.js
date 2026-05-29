@@ -48,6 +48,12 @@
   setTheme(saved);
 
   document.addEventListener('DOMContentLoaded', function () {
+    /* resolve app links (Books / Meron / login) to the right subdomain for this environment */
+    var _base = location.hostname.indexOf('ggouger') !== -1 ? location.hostname : 'ggouger.com';
+    document.querySelectorAll('[data-app]').forEach(function (el) {
+      el.href = location.protocol + '//' + el.getAttribute('data-app') + '.' + _base + '/';
+    });
+
     var btn = document.getElementById('themeBtn');
     if (btn) btn.addEventListener('click', function () {
       setTheme(root.dataset.theme === 'dark' ? 'light' : 'dark');

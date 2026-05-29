@@ -143,6 +143,20 @@ section{margin-top:46px;}
 .btn.ghost:hover{border-color:var(--ink); background:transparent;}
 .btnrow{display:flex; gap:12px; flex-wrap:wrap; margin-top:8px;}
 
+/* ---- inline login modal (single sign-on) ---- */
+.login-modal{position:fixed; inset:0; z-index:60; display:none; align-items:center; justify-content:center; padding:20px; background:rgba(8,10,9,.55); -webkit-backdrop-filter:blur(2px); backdrop-filter:blur(2px);}
+.login-modal.show{display:flex; animation:loginfade .18s ease;}
+@keyframes loginfade{from{opacity:0;} to{opacity:1;}}
+.login-card{position:relative; width:100%; max-width:360px; background:var(--bg); border:1px solid var(--line2); border-radius:8px; padding:24px 24px 22px; box-shadow:0 18px 50px rgba(0,0,0,.30);}
+.login-card .label{margin-bottom:6px;}
+.login-sub{color:var(--muted); font-size:12.5px; margin:0 0 18px;}
+.login-x{position:absolute; top:8px; right:10px; background:none; border:0; color:var(--muted); font-size:22px; line-height:1; cursor:pointer; padding:2px 7px;}
+.login-x:hover{color:var(--accent);}
+.login-form .btn{width:100%; background:none; cursor:pointer; margin-top:2px;}
+.login-form .btn:disabled{opacity:.6; cursor:default;}
+.login-err{color:#c0392b; font-size:12.5px; margin:0 0 12px;}
+html[data-theme="dark"] .login-err{color:#e57373;}
+
 /* ---- colophon / footer ---- */
 .colophon{margin-top:64px; border-top:1px solid var(--line); padding-top:14px; color:var(--muted); font-size:12px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px;}
 .colophon .hint{font-style:italic;}
@@ -159,7 +173,7 @@ section{margin-top:46px;}
 @media print{
   html[data-theme]{ --bg:#fff; --ink:#000; --fg:#111; --muted:#444; --line:#bbb; --line2:#bbb; --accent:#000; }
   body::before{display:none;}
-  .clock,.toggle,.currently,.margin-note,.monogram:hover,.btnrow{display:none;}
+  .clock,.toggle,.currently,.margin-note,.monogram:hover,.btnrow,.login-modal{display:none;}
   *{text-shadow:none !important; box-shadow:none !important;}
   .monogram .g-accent{filter:none !important;}
   .site-head{border-bottom:1px solid #000;}

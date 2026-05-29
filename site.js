@@ -4,7 +4,7 @@
    ============================================================ */
 (function () {
   "use strict";
-  var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var reduce = (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) || /[?&]print=1/.test(location.search);
   var GLYPHS = "•×%!?#/\\<>=*+~";
 
   /* favicon — the GG monogram */

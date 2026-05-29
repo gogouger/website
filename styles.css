@@ -97,7 +97,7 @@ section{margin-top:46px;}
 /* photo gallery */
 .gallery{display:grid; grid-template-columns:repeat(2,1fr); gap:16px; margin-top:8px;}
 .gallery figure{margin:0;}
-.gallery img{display:block; width:100%; height:auto; border:1px solid var(--line2); filter:saturate(.97);}
+.gallery img{display:block; width:100%; aspect-ratio:4/5; object-fit:cover; border:1px solid var(--line2); filter:saturate(.97);}
 .gallery figcaption{font-size:12px; color:var(--muted); font-style:italic; margin-top:6px;}
 @media (max-width:560px){ .gallery{grid-template-columns:1fr;} }
 
@@ -159,7 +159,7 @@ section{margin-top:46px;}
 @media print{
   html[data-theme]{ --bg:#fff; --ink:#000; --fg:#111; --muted:#444; --line:#bbb; --line2:#bbb; --accent:#000; }
   body::before{display:none;}
-  .clock,.toggle,.currently,.margin-note,.monogram:hover{display:none;}
+  .clock,.toggle,.currently,.margin-note,.monogram:hover,.btnrow{display:none;}
   *{text-shadow:none !important; box-shadow:none !important;}
   .monogram .g-accent{filter:none !important;}
   .site-head{border-bottom:1px solid #000;}

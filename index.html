@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Gordon Gouger</title>
+<meta name="description" content="Gordon Gouger — software & RF engineer working in RFML, computer vision, and AI/ML. Denver, Colorado.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+<script src="site.js" defer></script>
+</head>
+<body>
+  <div class="wrap">
+    <header class="site-head">
+      <a class="monogram" href="index.html" aria-label="Gordon Gouger — home">
+        <svg viewBox="0 0 100 100" role="img" aria-hidden="true" fill="none" stroke-width="6.5" stroke-linecap="round" stroke-linejoin="round">
+          <path class="g-accent" d="M77.71 34 A32 32 0 1 0 82 50 L60 50"/>
+          <path class="g-ink" d="M65.59 41 A18 18 0 1 0 68 50 L54 50"/>
+        </svg>
+      </a>
+      <nav class="nav">
+        <a href="index.html" aria-current="page">home</a>
+        <a href="about.html">about</a>
+        <a href="projects.html">projects</a>
+        <a href="writing.html">writing</a>
+        <a href="resume.html">résumé</a>
+      </nav>
+      <span class="clock" id="clock">--:--:-- MT</span>
+    </header>
+
+    <h1 class="scram">Gordon Gouger</h1>
+    <p class="role scram">Software &amp; RF engineer · Denver, Colorado</p>
+    <p class="currently"><span class="k">currently:</span> <span id="currently" class="scram">building rf-labeler</span></p>
+    <p class="intro">I build machine-learning systems that work in the real world — intelligent sensing and geolocation across <span class="term" data-note="Radio frequency — signals across the electromagnetic spectrum, captured and classified with software-defined radios.">RF</span>, vision, and audio. By day I'm a senior ML engineer; off the clock I'm running, in the woodshop, or at the glassblowing bench.</p>
+
+    <section class="skills">
+      <p class="label"><span class="hash">#</span> <span class="scram">what i do</span></p>
+      <div class="entry"><span class="t scram">RFML</span><span class="lead"></span><span class="val">ML on radio signals — detection, classification, geolocation</span></div>
+      <div class="entry"><span class="t scram">computer vision</span><span class="lead"></span><span class="val">detection, tracking &amp; perception pipelines</span></div>
+      <div class="entry"><span class="t scram">AI / ML</span><span class="lead"></span><span class="val">applied models, data tooling &amp; evaluation</span></div>
+    </section>
+
+    <section class="proj">
+      <p class="label"><span class="hash">#</span> <span class="scram">selected work</span></p>
+      <div class="entry"><span class="t"><a href="meron.html">Meron</a></span><span class="lead"></span><span class="val">ride &amp; run dashboard</span></div>
+      <div class="entry"><span class="t"><a href="projects.html">All projects</a></span><span class="lead"></span><span class="val">&#8594;</span></div>
+    </section>
+
+    <section>
+      <p class="label"><span class="hash">#</span> <span class="scram">writing</span></p>
+      <div class="entry"><span class="t"><a href="writing.html">Notes, papers &amp; talks</a></span><span class="lead"></span><span class="val">&#8594;</span></div>
+    </section>
+
+    <section>
+      <p class="label"><span class="hash">#</span> <span class="scram">elsewhere</span></p>
+      <div class="entry"><span class="t"><a href="https://www.linkedin.com/in/gordon-gouger/" target="_blank" rel="noopener">LinkedIn</a></span><span class="lead"></span><span class="val">/in/gordon-gouger <span class="ext">&#8599;</span></span></div>
+      <div class="entry"><span class="t"><a href="https://github.com/gordongouger" target="_blank" rel="noopener">GitHub</a></span><span class="lead"></span><span class="val">@gordongouger <span class="ext">&#8599;</span></span></div>
+      <div class="entry"><span class="t"><a href="mailto:gordon@ggouger.com">Email</a></span><span class="lead"></span><span class="val">gordon@ggouger.com</span></div>
+      <div class="entry"><span class="t"><a href="#">Book</a></span><span class="lead"></span><span class="val soon">coming soon</span></div>
+    </section>
+
+    <section>
+      <p class="label"><span class="hash">#</span> <span class="scram">r&eacute;sum&eacute;</span></p>
+      <p class="intro" style="margin-top:0;">A short history of the RFML, vision, and ML work I've shipped.</p>
+      <div class="btnrow">
+        <a class="btn" href="resume.html">Read résumé</a>
+        <a class="btn ghost" href="resume.pdf">Download PDF</a>
+      </div>
+    </section>
+
+    <div class="colophon">
+      <span class="hint">Set in IBM Plex Mono. Built in Denver.</span>
+      <button class="toggle" id="themeBtn">dark</button>
+    </div>
+  </div>
+
+  <div class="margin-note" id="marginNote"></div>
+</body>
+</html>

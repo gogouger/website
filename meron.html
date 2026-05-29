@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Meron — Gordon Gouger</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+<script src="site.js" defer></script>
+</head>
+<body>
+  <div class="wrap">
+    <header class="site-head">
+      <a class="monogram" href="index.html" aria-label="Gordon Gouger — home">
+        <svg viewBox="0 0 100 100" role="img" aria-hidden="true" fill="none" stroke-width="6.5" stroke-linecap="round" stroke-linejoin="round">
+          <path class="g-accent" d="M77.71 34 A32 32 0 1 0 82 50 L60 50"/>
+          <path class="g-ink" d="M65.59 41 A18 18 0 1 0 68 50 L54 50"/>
+        </svg>
+      </a>
+      <nav class="nav">
+        <a href="index.html">home</a>
+        <a href="about.html">about</a>
+        <a href="projects.html" aria-current="page">projects</a>
+        <a href="writing.html">writing</a>
+        <a href="resume.html">résumé</a>
+      </nav>
+      <span class="clock" id="clock">--:--:-- MT</span>
+    </header>
+
+    <h1 class="page-title scram">Meron</h1>
+    <p class="role">A private ride &amp; run dashboard</p>
+
+    <div class="prose">
+      <p class="lead-text"><em>[Draft — edit freely.]</em> Meron turns raw Strava exports into something legible: routes on a map, training trends over time, and a chat widget that answers questions over your own ride and run data.</p>
+      <p>It started as a way to make sense of years of <span class="term" data-note="FIT files — the binary activity format Garmin and Strava use for rides and runs.">FIT files</span> without handing them to a third party. Everything runs locally; the data stays yours.</p>
+    </div>
+
+    <figure class="figure"><div class="img-placeholder">screenshot — map &amp; trends</div><figcaption>Routes and training trends.</figcaption></figure>
+
+    <section>
+      <p class="label"><span class="hash">#</span> <span class="scram">details</span></p>
+      <div class="entry"><span class="t">Stack</span><span class="lead"></span><span class="val">Python · Flask · SQLite · Leaflet</span></div>
+      <div class="entry"><span class="t">Status</span><span class="lead"></span><span class="val soon">local — hosting soon</span></div>
+    </section>
+
+    <div class="btnrow">
+      <a class="btn" href="#">Visit (coming soon)</a>
+      <a class="btn ghost" href="https://github.com/gordongouger" target="_blank" rel="noopener">Source on GitHub</a>
+    </div>
+
+    <div class="colophon">
+      <span class="hint">Set in IBM Plex Mono. Built in Denver.</span>
+      <button class="toggle" id="themeBtn">dark</button>
+    </div>
+  </div>
+
+  <div class="margin-note" id="marginNote"></div>
+</body>
+</html>

@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Résumé — Gordon Gouger</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+<script src="site.js" defer></script>
+</head>
+<body>
+  <div class="wrap">
+    <header class="site-head">
+      <a class="monogram" href="index.html" aria-label="Gordon Gouger — home">
+        <svg viewBox="0 0 100 100" role="img" aria-hidden="true" fill="none" stroke-width="6.5" stroke-linecap="round" stroke-linejoin="round">
+          <path class="g-accent" d="M77.71 34 A32 32 0 1 0 82 50 L60 50"/>
+          <path class="g-ink" d="M65.59 41 A18 18 0 1 0 68 50 L54 50"/>
+        </svg>
+      </a>
+      <nav class="nav">
+        <a href="index.html">home</a>
+        <a href="about.html">about</a>
+        <a href="projects.html">projects</a>
+        <a href="writing.html">writing</a>
+        <a href="resume.html" aria-current="page">résumé</a>
+      </nav>
+      <span class="clock" id="clock">--:--:-- MT</span>
+    </header>
+
+    <h1 class="page-title scram">Résumé</h1>
+    <p class="role">Senior Machine Learning Engineer · Denver, Colorado</p>
+    <div class="contact">
+      <a href="mailto:gordon@ggouger.com">gordon@ggouger.com</a>
+      <span>330-217-5145</span>
+      <a href="https://www.linkedin.com/in/gordon-gouger/" target="_blank" rel="noopener">linkedin.com/in/gordon-gouger</a>
+    </div>
+    <div class="btnrow" style="margin-bottom:10px;">
+      <a class="btn" href="resume/Gordon-Gouger-Resume.pdf">Download PDF</a>
+      <a class="btn ghost" href="resume/resume.tex">View LaTeX source</a>
+    </div>
+
+    <section>
+      <p class="label"><span class="hash">#</span> <span class="scram">experience</span></p>
+
+      <div class="role-head"><span><span class="title">Senior Machine Learning Engineer</span> <span class="where">— Ozni AI</span></span><span class="when">Sep 2025 – Present</span></div>
+      <ul class="cv-bullets">
+        <li>Machine learning lead for two SBIR programs totaling $4M in funding.</li>
+        <li>Responsible for intelligent sensing and Pattern of Life (PoL) analytics across vision, audio, and RF modalities.</li>
+        <li>Developed and deployed drone-based geolocation algorithms leveraging onboard sensing and edge AI inference.</li>
+        <li>Designed and implemented end-to-end ML systems spanning data ingestion, model training, deployment, and field testing.</li>
+        <li>Deployed optimized models to constrained hardware including Raspberry Pi-class devices using ONNX and TensorFlow Lite.</li>
+        <li>Owned full software and hardware architecture including sensor integration, edge compute selection, and power constraints.</li>
+        <li>Built and maintained fully self-hosted CI/CD infrastructure using GitLab for model training, validation, and deployment.</li>
+        <li>Curated and managed multi-terabyte datasets for signal detection, classification, and model validation using real sensors and simulators.</li>
+      </ul>
+
+      <div class="role-head"><span><span class="title">Principal AI Software Engineer</span> <span class="where">— Northrop Grumman</span></span><span class="when">Oct 2021 – Sep 2025</span></div>
+      <ul class="cv-bullets">
+        <li>Machine learning technical lead on multiple rapid prototyping and transition-to-production programs supporting operational systems.</li>
+        <li>Developed CNN-based modulation recognition models for narrowband and wideband RF, including few-shot Siamese architectures.</li>
+        <li>Deployed optimized modulation recognition pipelines combining classical DSP features (e.g., kurtosis) with CNN inference for IARPA programs.</li>
+        <li>Designed and trained transformer-based models for overhead imagery, multi-spectral, hyperspectral, and wideband spectrum monitoring.</li>
+        <li>Built and deployed end-to-end emitter geolocation algorithms using Hawkeye 360 data, including intercept-to-link-set generation.</li>
+        <li>Performed intelligence fusion across RF, vision, and metadata sources for emitter classification and localization.</li>
+        <li>Deployed ML models to FPGA, NVIDIA Orin, and embedded edge platforms using ONNX and TensorRT.</li>
+        <li>Created and curated multi-terabyte RF datasets using real radios and high-fidelity simulators.</li>
+        <li>Built air-gapped systems utilizing locally hosted LLMs for analysis, reasoning, and operator support.</li>
+        <li>Led and mentored multiple ML engineers; served as ML lead on programs with cross-discipline teams.</li>
+        <li>Regularly interacted with customer leadership and supported deployment into live operational environments.</li>
+      </ul>
+
+      <div class="role-head"><span><span class="title">Engineer</span> <span class="where">— Rincon Research Corporation</span></span><span class="when">Jun 2021 – Oct 2021</span></div>
+      <ul class="cv-bullets">
+        <li>Developed end-to-end GPS simulator.</li>
+      </ul>
+    </section>
+
+    <section>
+      <p class="label"><span class="hash">#</span> <span class="scram">education</span></p>
+      <div class="cv-row"><span class="what"><span class="title">Master of Science, Electrical Engineering</span></span><span class="when">May 2021 · GPA 4.00</span></div>
+      <div class="cv-row"><span class="what"><span class="title">Bachelor of Science, Engineering Physics</span></span><span class="when">May 2020 · GPA 3.96</span></div>
+    </section>
+
+    <section>
+      <p class="label"><span class="hash">#</span> <span class="scram">technical strengths</span></p>
+      <div class="tags">
+        <span>FAA 107 Certified</span><span>Python</span><span>C++</span><span>C</span><span>MATLAB</span><span>Rust</span>
+        <span>CNNs</span><span>Transformers</span><span>Classical DSP + ML Hybrids</span><span>Modulation Recognition</span>
+        <span>Geolocation</span><span>Sensor Fusion</span><span>ONNX</span><span>TensorRT</span><span>TensorFlow Lite</span>
+        <span>Docker</span><span>Linux</span><span>GitLab CI/CD</span><span>Azure</span><span>Agile</span><span>Jira</span><span>LaTeX</span>
+      </div>
+    </section>
+
+    <section>
+      <p class="label"><span class="hash">#</span> <span class="scram">clearance</span></p>
+      <p class="oneline">Active (but not currently held) TS/SCI.</p>
+    </section>
+
+    <section>
+      <p class="label"><span class="hash">#</span> <span class="scram">hobbies &amp; interests</span></p>
+      <p class="oneline">Running · Woodworking · Martial Arts · Glassblowing · Active in Local Church</p>
+    </section>
+
+    <div class="colophon">
+      <span class="hint">Set in IBM Plex Mono. Built in Denver.</span>
+      <button class="toggle" id="themeBtn">dark</button>
+    </div>
+  </div>
+
+  <div class="margin-note" id="marginNote"></div>
+</body>
+</html>

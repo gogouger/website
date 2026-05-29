@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Projects — Gordon Gouger</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+<script src="site.js" defer></script>
+</head>
+<body>
+  <div class="wrap">
+    <header class="site-head">
+      <a class="monogram" href="index.html" aria-label="Gordon Gouger — home">
+        <svg viewBox="0 0 100 100" role="img" aria-hidden="true" fill="none" stroke-width="6.5" stroke-linecap="round" stroke-linejoin="round">
+          <path class="g-accent" d="M77.71 34 A32 32 0 1 0 82 50 L60 50"/>
+          <path class="g-ink" d="M65.59 41 A18 18 0 1 0 68 50 L54 50"/>
+        </svg>
+      </a>
+      <nav class="nav">
+        <a href="index.html">home</a>
+        <a href="about.html">about</a>
+        <a href="projects.html" aria-current="page">projects</a>
+        <a href="writing.html">writing</a>
+        <a href="resume.html">résumé</a>
+      </nav>
+      <span class="clock" id="clock">--:--:-- MT</span>
+    </header>
+
+    <h1 class="page-title scram">Projects</h1>
+    <p class="intro">Things I've built — mostly where signal processing, machine learning, and the physical world meet.</p>
+
+    <section class="proj">
+      <p class="label"><span class="hash">#</span> <span class="scram">selected</span></p>
+
+      <a class="row" href="meron.html">
+        <div class="entry"><span class="t scram">Meron</span><span class="lead"></span><span class="val">ride &amp; run dashboard</span></div>
+        <p class="d">Turns raw Strava exports into something legible — routes on a map, training trends, and a chat widget over your own ride &amp; run data. Runs locally; the data stays yours.</p>
+      </a>
+
+      <div class="row">
+        <div class="entry"><span class="num">·</span><span class="t"><em>project two</em></span><span class="lead"></span><span class="val soon">draft</span></div>
+        <p class="d"><em>[Add a project — one or two lines on what it is and what you used.]</em></p>
+      </div>
+
+      <div class="row">
+        <div class="entry"><span class="num">·</span><span class="t"><em>project three</em></span><span class="lead"></span><span class="val soon">draft</span></div>
+        <p class="d"><em>[Add a project.]</em></p>
+      </div>
+    </section>
+
+    <div class="colophon">
+      <span class="hint">Set in IBM Plex Mono. Built in Denver.</span>
+      <button class="toggle" id="themeBtn">dark</button>
+    </div>
+  </div>
+
+  <div class="margin-note" id="marginNote"></div>
+</body>
+</html>

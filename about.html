@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>About — Gordon Gouger</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+<script src="site.js" defer></script>
+</head>
+<body>
+  <div class="wrap">
+    <header class="site-head">
+      <a class="monogram" href="index.html" aria-label="Gordon Gouger — home">
+        <svg viewBox="0 0 100 100" role="img" aria-hidden="true" fill="none" stroke-width="6.5" stroke-linecap="round" stroke-linejoin="round">
+          <path class="g-accent" d="M77.71 34 A32 32 0 1 0 82 50 L60 50"/>
+          <path class="g-ink" d="M65.59 41 A18 18 0 1 0 68 50 L54 50"/>
+        </svg>
+      </a>
+      <nav class="nav">
+        <a href="index.html">home</a>
+        <a href="about.html" aria-current="page">about</a>
+        <a href="projects.html">projects</a>
+        <a href="writing.html">writing</a>
+        <a href="resume.html">résumé</a>
+      </nav>
+      <span class="clock" id="clock">--:--:-- MT</span>
+    </header>
+
+    <h1 class="page-title scram">About</h1>
+
+    <div class="prose">
+      <figure class="portrait">
+        <div class="img-placeholder">portrait</div>
+        <figcaption>Gordon, somewhere with antennas.</figcaption>
+      </figure>
+      <p class="lead-text"><em>[Draft bio — edit freely.]</em> I'm a senior machine-learning engineer in Denver working on intelligent sensing — detection, classification, and <span class="term" data-note="Pinpointing where a signal or object is, from sensor data alone.">geolocation</span> across RF, vision, and audio.</p>
+      <p>I like problems where the messy physical world meets software: turning raw signals, video, and sensor data into something a model — and a person — can actually use. Most of what I build lives close to hardware, from software-defined radios to small edge devices in the field.</p>
+      <p>Outside of work you'll find me running, in the woodshop, practicing martial arts, at the glassblowing bench, or active in my local church.</p>
+    </div>
+
+    <section>
+      <p class="label"><span class="hash">#</span> <span class="scram">short bio</span></p>
+      <p class="prose"><em>[For talks, intros, and bylines.]</em> Gordon Gouger is a senior machine-learning engineer in Denver working on intelligent sensing and geolocation across RF, vision, and audio.</p>
+    </section>
+
+    <section>
+      <p class="label"><span class="hash">#</span> <span class="scram">photos</span></p>
+      <figure class="figure"><div class="img-placeholder">photo — add to /assets/img</div><figcaption>Caption goes here.</figcaption></figure>
+      <figure class="figure"><div class="img-placeholder">photo — add to /assets/img</div><figcaption>Caption goes here.</figcaption></figure>
+    </section>
+
+    <div class="colophon">
+      <span class="hint">Set in IBM Plex Mono. Built in Denver.</span>
+      <button class="toggle" id="themeBtn">dark</button>
+    </div>
+  </div>
+
+  <div class="margin-note" id="marginNote"></div>
+</body>
+</html>

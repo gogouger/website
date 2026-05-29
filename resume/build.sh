@@ -6,6 +6,6 @@
 #
 set -euo pipefail
 cd "$(dirname "$0")"
-tectonic resume.tex
+tectonic -Z continue-on-errors resume.tex   # continue-on-errors recovers like Overleaf (itemize nested in rSubsection)
 cp resume.pdf Gordon-Gouger-Resume.pdf
 echo "→ Gordon-Gouger-Resume.pdf"

@@ -183,6 +183,53 @@ html[data-theme="dark"] .login-err{color:#e57373;}
   .portrait{float:none; width:100%; max-width:220px; margin:0 0 18px;}
 }
 
+/* ---- mobile: ≤575.98px ---- */
+@media (max-width:575.98px){
+  /* breathing room — narrower gutters */
+  .wrap{padding:22px 18px 90px;}
+
+  /* tighter nav so labels don't crowd */
+  .site-head{gap:12px; padding:12px 0 14px;}
+  .nav{gap:10px 14px; font-size:11.5px;}
+  .monogram svg{height:38px;}
+  .clock{font-size:11px;}
+
+  /* masthead — slightly smaller h1 cap so it never overflows */
+  h1{font-size:clamp(32px,9vw,44px); margin-top:26px;}
+  .intro{margin-top:20px;}
+
+  /* index entry rows — stack label and value so descriptions don't
+     squeeze into a 1-em column at the right */
+  .entry{flex-wrap:wrap; gap:4px 10px; margin-bottom:14px;}
+  .entry .t{white-space:normal;}
+  .entry .val{white-space:normal; font-size:13px; flex-basis:100%; padding-left:0;}
+  .entry .lead{display:none;}
+  /* keep skills .val left-aligned on mobile (it's right-aligned on desktop) */
+  .skills .entry .val{text-align:left;}
+
+  /* project rows — description sits flush below the title, not indented */
+  .proj .d{margin:4px 0 18px; font-size:14px;}
+
+  /* résumé role row — stack title and date */
+  .role-head{flex-direction:column; gap:2px; margin-top:18px;}
+  .role-head .when{font-size:12.5px;}
+  .cv-row{flex-direction:column; gap:4px; padding:14px 0;}
+  .cv-row .when{font-size:12.5px;}
+  .cv-bullets li{font-size:14px;}
+
+  /* contact form — taller submit so it hits the 44px tap target */
+  .form button.btn{width:100%; padding:14px 20px; font-size:13px;}
+  .field input, .field textarea{font-size:16px; padding:12px 12px;} /* 16px avoids iOS zoom-on-focus */
+
+  /* btn group — let primary stretch */
+  .btnrow{gap:10px;}
+  .btnrow .btn{flex:1 1 auto; text-align:center; padding:13px 18px;}
+
+  /* meron-live card — tighter padding */
+  .meron-live{padding:16px 16px;}
+  .meron-live .stat .n{font-size:20px;}
+}
+
 /* ---- print: clean one-page résumé ---- */
 @media print{
   html[data-theme]{ --bg:#fff; --ink:#000; --fg:#111; --muted:#444; --line:#bbb; --line2:#bbb; --accent:#000; }

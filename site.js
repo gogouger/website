@@ -48,8 +48,17 @@
   setTheme(saved);
 
   document.addEventListener('DOMContentLoaded', function () {
-    /* resolve app links (Books / Meron / login) to the right subdomain for this environment */
-    var _base = location.hostname.indexOf('ggouger') !== -1 ? location.hostname : 'ggouger.com';
+    /* resolve app links (Books / Meron / login) to the right apex for
+       this environment. Handles both the dev/local *.ggouger.localhost
+       and prod *.gordongouger.com — when we're already on a subdomain
+       (e.g. opened from meron.<apex>), strip it so the data-app prefix
+       is appended to the apex, not double-stacked. */
+    var _base = (function () {
+      var h = location.hostname;
+      if (h.indexOf('gouger') === -1) return 'gordongouger.com';  // prod fallback
+      var parts = h.split('.');
+      return parts.length >= 3 ? parts.slice(-2).join('.') : h;
+    })();
     document.querySelectorAll('[data-app]').forEach(function (el) {
       el.href = location.protocol + '//' + el.getAttribute('data-app') + '.' + _base + '/';
     });

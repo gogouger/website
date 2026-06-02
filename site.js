@@ -99,7 +99,7 @@
           '<div class="login-card" role="dialog" aria-modal="true" aria-label="Log in">' +
             '<button class="login-x" type="button" aria-label="Close">×</button>' +
             '<p class="label"><span class="hash">#</span> <span>log in</span></p>' +
-            '<p class="login-sub">One login for the site, Meron &amp; Books.</p>' +
+            '<p class="login-sub">One login for the site, Meron &amp; Athenaeum.</p>' +
             '<form class="login-form" novalidate>' +
               '<div class="field"><label for="lm-user">Username</label>' +
                 '<input id="lm-user" name="username" autocomplete="username" autocapitalize="off" spellcheck="false" required></div>' +
@@ -153,7 +153,7 @@
         setTimeout(function () { var u = modal.querySelector('#lm-user'); if (u) u.focus(); }, 30);
       }
       function logout() {
-        fetch('/__authlogout', { method: 'POST', credentials: 'include', headers: { 'Accept': 'application/json' } })
+        fetch('/__authlogout', { method: 'POST', credentials: 'include', headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' }, body: '{}' })
           .then(function () { return refresh(); })
           .catch(function () { location.href = authHost + '/logout'; });
       }
@@ -163,12 +163,6 @@
           if (!inlineActive) return;               /* outside caddy stack: use the href fallback */
           e.preventDefault();
           if (authed) logout(); else openModal(null);
-        });
-      });
-      /* clicking Meron/Books while logged out: log in inline first, then continue there */
-      document.querySelectorAll('[data-app="meron"],[data-app="books"]').forEach(function (el) {
-        el.addEventListener('click', function (e) {
-          if (inlineActive && !authed) { e.preventDefault(); openModal(el.href); }
         });
       });
 
@@ -282,10 +276,12 @@
         var btn = cform.querySelector('button[type=submit]');
         var label = btn.textContent;
         btn.disabled = true; btn.textContent = 'sending…';
+        // FormData auto-encodes multipart so any attached files come along.
+        var fd = new FormData(cform);
         fetch('/contact', {
           method: 'POST',
-          headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
-          body: JSON.stringify({ name: cform.name.value, email: cform.email.value, message: cform.message.value })
+          headers: { 'Accept': 'application/json' },
+          body: fd
         })
           .then(function (r) { return r.json().then(function (j) { return { ok: r.ok, j: j }; }); })
           .then(function (res) {
@@ -293,7 +289,7 @@
               cform.reset();
               setStatus('Thanks — your message was sent.', true);
             } else {
-              setStatus((res.j && res.j.error) || 'Something went wrong — try again, or reach me on LinkedIn.', false);
+              setStatus((res.j && (res.j.detail || res.j.error)) || 'Something went wrong — try again, or reach me on LinkedIn.', false);
             }
           })
           .catch(function () { setStatus('Network error — try again, or reach me on LinkedIn.', false); })

@@ -8,8 +8,8 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="styles.css?v=2">
-<script src="site.js?v=2" defer></script>
+<link rel="stylesheet" href="styles.css?v=9">
+<script src="site.js?v=9" defer></script>
 </head>
 <body>
   <div class="wrap">
@@ -34,7 +34,7 @@
     <h1 class="page-title scram">Contact</h1>
     <p class="intro">Have a question, a project in mind, or just want to say hello? Send a note and I'll get back to you.</p>
 
-    <form class="form" id="contactForm" action="/contact" method="POST">
+    <form class="form" id="contactForm" action="/contact" method="POST" enctype="multipart/form-data">
       <div class="field">
         <label for="name">Name</label>
         <input id="name" name="name" type="text" autocomplete="name" required>
@@ -46,6 +46,11 @@
       <div class="field">
         <label for="message">Message</label>
         <textarea id="message" name="message" required></textarea>
+      </div>
+      <div class="field">
+        <label for="files">Attachments <span style="color:var(--muted);font-weight:normal;font-size:12px;">— optional, up to 3 files, 5 MB each</span></label>
+        <input id="files" name="files" type="file" multiple
+               accept=".pdf,.doc,.docx,.txt,.png,.jpg,.jpeg,.webp,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,text/plain,image/*">
       </div>
       <button class="btn" type="submit">Send message</button>
       <p class="form-status" id="contactStatus" role="status" hidden></p>

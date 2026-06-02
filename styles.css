@@ -244,3 +244,7 @@ html[data-theme="dark"] .login-err{color:#e57373;}
   .wrap{max-width:none; padding:0;}
   section,.cv-row,.figure{break-inside:avoid;}
 }
+
+/* Keep the bottom of an image visible inside an object-fit:cover box —
+   useful when the logo/subject sits near the bottom of the frame. */
+.gallery img.anchor-bottom{object-position:center bottom;}

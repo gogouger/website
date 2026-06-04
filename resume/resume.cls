@@ -143,7 +143,7 @@
 		\textit{#3} \hfill \textit{#4} % Output job title and location
 	}%
 	\smallskip % Vertical whitespace
-	\begin{list}{}{\leftmargin=0em} % \cdot used for bullets, no indentation
+	\begin{list}{$\bullet$}{\leftmargin=1.5em} % bullet markers, indented
 		\setlength{\itemsep}{-0.5em} \vspace{-0.5em} % Reduce vertical spacing between items in the list for a tighter look
 }{
 	\end{list}

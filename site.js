@@ -261,6 +261,90 @@
         .catch(function () { meronLive.style.display = 'none'; });
     }
 
+    /* Athenaeum shelf preview — pulls Gordon's favorited books straight from
+       the public books API (no proxy needed; CORS is open). Renders
+       all-time favorites with a gold border, then a top-5 per genre. */
+    var athLive = document.getElementById('athenaeum-live');
+    if (athLive) {
+      var BOOKS_HOST = 'https://books.gordongouger.com';
+      var USERNAME = 'ggouger';
+      var USER_ID = 2;
+      var GENRES = ['Religious', 'Fiction', 'Other'];
+
+      var esc = function (s) {
+        var d = document.createElement('div'); d.textContent = s || ''; return d.innerHTML;
+      };
+      var coverUrl = function (b) {
+        if (!b.cover_filename) return '';
+        var u = BOOKS_HOST + '/covers/' + USER_ID + '/' + b.cover_filename;
+        if (b.cover_updated_at) u += '?v=' + encodeURIComponent(b.cover_updated_at);
+        return u;
+      };
+      var bookCard = function (b, gold) {
+        var cov = coverUrl(b);
+        var img = cov
+          ? '<img src="' + cov + '" alt="" loading="lazy" ' +
+              'onerror="this.outerHTML=\'<div class=&quot;ath-no-cover&quot;></div>\'">'
+          : '<div class="ath-no-cover"></div>';
+        return '<a class="ath-book' + (gold ? ' ath-all-time' : '') + '" ' +
+                  'href="' + BOOKS_HOST + '/' + USERNAME + '/#/book/' + b.id + '" ' +
+                  'target="_blank" rel="noopener">' +
+          img +
+          '<div class="ath-title">' + esc(b.title) + '</div>' +
+          '<div class="ath-author">' + esc(b.authors) + '</div>' +
+        '</a>';
+      };
+
+      fetch(BOOKS_HOST + '/api/' + USERNAME + '/books?is_favorite=true&limit=200&sort=title')
+        .then(function (r) { return r.ok ? r.json() : null; })
+        .then(function (d) {
+          if (!d || !d.books || !d.books.length) {
+            athLive.style.display = 'none';
+            return;
+          }
+          var books = d.books;
+          var allTime = books.filter(function (b) { return b.is_all_time_fav === 1; });
+
+          var byGenre = {};
+          GENRES.forEach(function (g) { byGenre[g] = []; });
+          books.forEach(function (b) {
+            var g = (b.manual_category && byGenre[b.manual_category]) ? b.manual_category : 'Other';
+            byGenre[g].push(b);
+          });
+          GENRES.forEach(function (g) {
+            byGenre[g].sort(function (a, b) {
+              // Gold tier first, then rating desc, then by title.
+              var ag = a.is_all_time_fav === 1 ? 0 : 1;
+              var bg = b.is_all_time_fav === 1 ? 0 : 1;
+              if (ag !== bg) return ag - bg;
+              var ar = a.rating || 0, br = b.rating || 0;
+              if (br !== ar) return br - ar;
+              return (a.sort_title || a.title || '').localeCompare(b.sort_title || b.title || '');
+            });
+            byGenre[g] = byGenre[g].slice(0, 5);
+          });
+
+          var html = '';
+          if (allTime.length) {
+            html += '<div class="ml-h">all-time favorites</div>';
+            html += '<div class="ath-row">';
+            allTime.forEach(function (b) { html += bookCard(b, true); });
+            html += '</div>';
+          }
+          GENRES.forEach(function (g) {
+            var items = byGenre[g];
+            if (!items.length) return;
+            html += '<div class="ml-h ml-h2">top ' + items.length + ' &middot; ' + g.toLowerCase() + '</div>';
+            html += '<div class="ath-row">';
+            items.forEach(function (b) { html += bookCard(b, b.is_all_time_fav === 1); });
+            html += '</div>';
+          });
+          html += '<p class="cap"><span class="live-dot"></span>live from the Athenaeum DB</p>';
+          athLive.innerHTML = html;
+        })
+        .catch(function () { athLive.style.display = 'none'; });
+    }
+
     /* contact form — AJAX submit to the self-hosted /contact endpoint */
     var cform = document.getElementById('contactForm');
     if (cform) {

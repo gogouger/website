@@ -92,7 +92,14 @@ section{margin-top:46px;}
 .img-placeholder{display:flex; align-items:center; justify-content:center; aspect-ratio:3/2; border:1px dashed var(--line2); color:var(--muted); font-size:12px; letter-spacing:.1em; text-transform:uppercase;}
 
 /* live Meron telemetry card (project page) */
-.meron-live{margin:30px 0; border:1px solid var(--line2); border-radius:8px; padding:18px 20px; background:color-mix(in srgb, var(--accent) 5%, var(--bg));}
+.meron-live, .athenaeum-live{margin:30px 0; border:1px solid var(--line2); border-radius:8px; padding:18px 20px; background:color-mix(in srgb, var(--accent) 5%, var(--bg));}
+.athenaeum-live .ath-row{display:grid; grid-template-columns:repeat(5,1fr); gap:14px; margin-bottom:16px;}
+.athenaeum-live .ath-book{display:flex; flex-direction:column; gap:6px; text-decoration:none; color:inherit;}
+.athenaeum-live .ath-book img, .athenaeum-live .ath-no-cover{width:100%; aspect-ratio:2/3; object-fit:cover; border-radius:3px; background:var(--line2); display:block;}
+.athenaeum-live .ath-book.ath-all-time img, .athenaeum-live .ath-book.ath-all-time .ath-no-cover{box-shadow:0 0 0 2px #d4af37, 0 4px 12px rgba(212,175,55,.25);}
+.athenaeum-live .ath-title{font-size:11px; font-weight:600; color:var(--ink); line-height:1.25;}
+.athenaeum-live .ath-author{font-size:10px; color:var(--muted); line-height:1.2;}
+@media (max-width:560px){ .athenaeum-live .ath-row{grid-template-columns:repeat(3,1fr); gap:10px;} }
 .meron-live .stats{display:grid; grid-template-columns:repeat(4,1fr); gap:14px; margin-bottom:12px;}
 .meron-live .stat{display:flex; flex-direction:column;}
 .meron-live .stat .n{font-size:23px; color:var(--ink); font-weight:600; line-height:1.05; font-variant-numeric:tabular-nums;}

@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="robots" content="index, follow, noimageindex">
-<title>Projects — Gordon Gouger</title>
+<title>Athenaeum — Gordon Gouger</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
@@ -31,24 +31,27 @@
       <span class="clock" id="clock">--:--:-- MT</span>
     </header>
 
-    <h1 class="page-title scram">Projects</h1>
-    <p class="intro">Things I've built — mostly where signal processing, machine learning, and the physical world meet.</p>
+    <h1 class="page-title scram">Athenaeum</h1>
+    <p class="role">A self-hosted reading library</p>
 
-    <section class="proj">
-      <p class="label"><span class="hash">#</span> <span class="scram">selected</span></p>
+    <div class="prose">
+      <p class="lead-text">Athenaeum is the shelf of books I&rsquo;ve read and own, browsable publicly. It tracks reading status (audiobook / physical / ebook), groups books by series, syncs covers and metadata from Hardcover, and pushes my library out to Kobo / KOReader over OPDS so I can pull a book onto an e-reader without re-uploading anything.</p>
+      <p>Below: my all-time favorites &mdash; the books I&rsquo;d hand to a friend &mdash; followed by the top 5 in each genre. Live from the Athenaeum DB.</p>
+    </div>
 
-      <a class="row" href="meron.html">
-        <div class="entry"><span class="t scram">Meron</span><span class="lead"></span><span class="val">run &amp; lift dashboard</span></div>
-        <p class="d">A hybrid training dashboard for athletes who run <em>and</em> lift — endurance + strength data in one view: routes on a map, training-load curves, race predictions, lift-PR progression, and a chat widget over your own training data. Self-hosted; data stays on your machine.</p>
-      </a>
-      <p class="proj-source"><a href="https://github.com/gogouger/meron" target="_blank" rel="noopener">source on GitHub <span class="ext">&#8599;</span></a></p>
+    <div id="athenaeum-live" class="athenaeum-live"><p class="cap">loading shelves&hellip;</p></div>
 
-      <a class="row" href="athenaeum.html">
-        <div class="entry"><span class="t scram">Athenaeum</span><span class="lead"></span><span class="val">reading library</span></div>
-        <p class="d">A self-hosted reading library — the books I've read and own, browsable publicly, with adding &amp; editing behind login. Syncs to Kobo / KOReader over OPDS.</p>
-      </a>
-      <p class="proj-source"><a href="https://github.com/gogouger/books" target="_blank" rel="noopener">source on GitHub <span class="ext">&#8599;</span></a></p>
+    <section>
+      <p class="label"><span class="hash">#</span> <span class="scram">details</span></p>
+      <div class="entry"><span class="t">Stack</span><span class="lead"></span><span class="val">FastAPI &middot; SQLite &middot; TypeScript &middot; nginx</span></div>
+      <div class="entry"><span class="t">Sync</span><span class="lead"></span><span class="val">Hardcover &middot; OPDS &middot; Audible</span></div>
+      <div class="entry"><span class="t">Status</span><span class="lead"></span><span class="val">live &middot; self-hosted</span></div>
     </section>
+
+    <div class="btnrow">
+      <a class="btn" href="https://books.gordongouger.com" data-app="books" target="_blank" rel="noopener">Open Athenaeum (live)</a>
+      <a class="btn ghost" href="https://github.com/gogouger/books" target="_blank" rel="noopener">Source on GitHub</a>
+    </div>
 
     <div class="colophon">
       <a href="https://auth.gordongouger.com" data-app="auth">log in</a>

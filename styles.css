@@ -97,6 +97,7 @@ section{margin-top:46px;}
 .athenaeum-live .ath-book{display:flex; flex-direction:column; gap:6px; text-decoration:none; color:inherit;}
 .athenaeum-live .ath-book img, .athenaeum-live .ath-no-cover{width:100%; aspect-ratio:2/3; object-fit:cover; border-radius:3px; background:var(--line2); display:block;}
 .athenaeum-live .ath-book.ath-all-time img, .athenaeum-live .ath-book.ath-all-time .ath-no-cover{box-shadow:0 0 0 2px #d4af37, 0 4px 12px rgba(212,175,55,.25);}
+.athenaeum-live .ath-book.ath-second-fav img, .athenaeum-live .ath-book.ath-second-fav .ath-no-cover{box-shadow:0 0 0 2px #b8b8b8, 0 4px 12px rgba(184,184,184,.25);}
 .athenaeum-live .ath-title{font-size:11px; font-weight:600; color:var(--ink); line-height:1.25;}
 .athenaeum-live .ath-author{font-size:10px; color:var(--muted); line-height:1.2;}
 @media (max-width:560px){ .athenaeum-live .ath-row{grid-template-columns:repeat(3,1fr); gap:10px;} }

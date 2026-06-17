@@ -280,13 +280,15 @@
         if (b.cover_updated_at) u += '?v=' + encodeURIComponent(b.cover_updated_at);
         return u;
       };
-      var bookCard = function (b, gold) {
+      var bookCard = function (b) {
         var cov = coverUrl(b);
         var img = cov
           ? '<img src="' + cov + '" alt="" loading="lazy" ' +
               'onerror="this.outerHTML=\'<div class=&quot;ath-no-cover&quot;></div>\'">'
           : '<div class="ath-no-cover"></div>';
-        return '<a class="ath-book' + (gold ? ' ath-all-time' : '') + '" ' +
+        var tierClass = b.is_all_time_fav === 1 ? ' ath-all-time'
+          : b.is_second_fav === 1 ? ' ath-second-fav' : '';
+        return '<a class="ath-book' + tierClass + '" ' +
                   'href="' + BOOKS_HOST + '/' + USERNAME + '/#/book/' + b.id + '" ' +
                   'target="_blank" rel="noopener">' +
           img +
@@ -311,12 +313,15 @@
             var g = (b.manual_category && byGenre[b.manual_category]) ? b.manual_category : 'Other';
             byGenre[g].push(b);
           });
+          var tier = function (b) {
+            if (b.is_all_time_fav === 1) return 0;
+            if (b.is_second_fav === 1) return 1;
+            return 2;
+          };
           GENRES.forEach(function (g) {
             byGenre[g].sort(function (a, b) {
-              // Gold tier first, then rating desc, then by title.
-              var ag = a.is_all_time_fav === 1 ? 0 : 1;
-              var bg = b.is_all_time_fav === 1 ? 0 : 1;
-              if (ag !== bg) return ag - bg;
+              var t = tier(a) - tier(b);
+              if (t !== 0) return t;
               var ar = a.rating || 0, br = b.rating || 0;
               if (br !== ar) return br - ar;
               return (a.sort_title || a.title || '').localeCompare(b.sort_title || b.title || '');
@@ -328,7 +333,7 @@
           if (allTime.length) {
             html += '<div class="ml-h">all-time favorites</div>';
             html += '<div class="ath-row">';
-            allTime.forEach(function (b) { html += bookCard(b, true); });
+            allTime.forEach(function (b) { html += bookCard(b); });
             html += '</div>';
           }
           GENRES.forEach(function (g) {
@@ -336,7 +341,7 @@
             if (!items.length) return;
             html += '<div class="ml-h ml-h2">top ' + items.length + ' &middot; ' + g.toLowerCase() + '</div>';
             html += '<div class="ath-row">';
-            items.forEach(function (b) { html += bookCard(b, b.is_all_time_fav === 1); });
+            items.forEach(function (b) { html += bookCard(b); });
             html += '</div>';
           });
           html += '<p class="cap"><span class="live-dot"></span>live from the Athenaeum DB</p>';

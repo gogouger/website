@@ -257,8 +257,3 @@ html[data-theme="dark"] .login-err{color:#e57373;}
    useful when the logo/subject sits near the bottom of the frame. */
 .gallery img.anchor-bottom{object-position:center bottom;}
 
-/* Source-on-GitHub link below each project row on projects.html. Tucked
-   under and indented so it reads as a meta-line on the row above it. */
-.proj-source{margin:-12px 0 22px 0; font-size:12.5px;}
-.proj-source a{color:var(--muted); text-decoration:none; border-bottom:1px dotted var(--line2);}
-.proj-source a:hover{color:var(--ink); border-bottom-color:var(--ink);}

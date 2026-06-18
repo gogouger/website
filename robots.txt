@@ -1,6 +1,8 @@
 # Gordon Gouger — personal site
 # Search engines welcome; AI / data-scraping bots blocked.
 
+Sitemap: https://gordongouger.com/sitemap.xml
+
 User-agent: *
 Allow: /
 

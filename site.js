@@ -350,6 +350,36 @@
         .catch(function () { athLive.style.display = 'none'; });
     }
 
+    /* Colorado 14er project-page preview — the full list lives on the dedicated
+       tracker subapp; this keeps the personal-site page light and visual. */
+    var peakPreview = document.getElementById('peakPreview');
+    if (peakPreview) {
+      fetch('/peaks.json', { headers: { 'Accept': 'application/json' } })
+        .then(function (r) { if (!r.ok) throw 0; return r.json(); })
+        .then(function (peaks) {
+          return fetch('/summits.json', { headers: { 'Accept': 'application/json' } })
+            .then(function (r) { if (!r.ok) throw 0; return r.json(); })
+            .then(function (summits) { return { peaks: peaks, summits: summits || {} }; });
+        })
+        .then(function (data) {
+          var peaks = data.peaks, summits = data.summits, done = peaks.filter(function (p) { return !!summits[p.slug]; });
+          if (!Array.isArray(peaks) || peaks.length !== 58) throw 0;
+          var paths = '', labels = '', ranges = ['Sawatch', 'San Juan', 'Sangre de Cristo', 'Elk', 'Front', 'Tenmile-Mosquito'];
+          peaks.forEach(function (p) {
+            var isDone = !!summits[p.slug], x = p.xy[0], y = p.xy[1], w = p.w, h = 175, cx = x + w / 2;
+            var name = p.name.replace(/^Mount /, 'Mt. '), rangeClass = ranges.indexOf(p.range);
+            paths += '<g class="peak' + (isDone ? ' is-done' : '') + ' range-' + rangeClass + '" aria-hidden="true"><title>' + name + ' · ' + p.elev.toLocaleString('en-US') + ' ft</title><path d="M ' + cx + ' ' + y + ' L ' + x + ' ' + (y + h) + ' L ' + (x + w) + ' ' + (y + h) + ' Z"/></g>';
+            if (isDone) labels += '<text class="peak-label" x="' + cx + '" y="' + (y + h - 30) + '"><tspan class="peak-elev" x="' + cx + '" dy="0">' + p.elev.toLocaleString('en-US') + '</tspan><tspan x="' + cx + '" dy="14">' + name + '</tspan></text>';
+          });
+          peakPreview.innerHTML =
+            '<a class="peak-preview-link" href="https://14ers.gordongouger.com" aria-label="Open the full 14er tracker">' +
+              '<svg class="peak-poster" viewBox="0 0 700 980" role="img" aria-label="Colorado 14ers — ' + done.length + ' of 58 summited">' + paths + labels + '</svg>' +
+            '</a>' +
+            '<div class="peak-stats"><div class="stat"><span class="n">' + done.length + ' / 58</span><span class="l">summited</span></div><div class="stat"><span class="n">full tracker ↗</span><span class="l">14ers.gordongouger.com</span></div></div>';
+        })
+        .catch(function () { peakPreview.innerHTML = '<p class="cap">The peak preview could not load. Try reloading this page.</p>'; });
+    }
+
     /* Colorado 14er tracker — fixed peak reference data plus a tiny, personal
        summit log. This deliberately stays client-side: both files are static,
        same-origin JSON and a summit entry updates every view at once. */
@@ -371,8 +401,8 @@
       };
 
       Promise.all([
-        fetch('peaks.json', { headers: { 'Accept': 'application/json' } }).then(function (r) { if (!r.ok) throw 0; return r.json(); }),
-        fetch('summits.json', { headers: { 'Accept': 'application/json' } }).then(function (r) { if (!r.ok) throw 0; return r.json(); })
+        fetch('/peaks.json', { headers: { 'Accept': 'application/json' } }).then(function (r) { if (!r.ok) throw 0; return r.json(); }),
+        fetch('/summits.json', { headers: { 'Accept': 'application/json' } }).then(function (r) { if (!r.ok) throw 0; return r.json(); })
       ]).then(function (data) {
         var peaks = data[0], summits = data[1] || {};
         if (!Array.isArray(peaks) || peaks.length !== 58) throw 0;

@@ -8,11 +8,11 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="styles.css?v=15">
-<script src="site.js?v=15" defer></script>
-<meta name="description" content="A personal tracker for Gordon Gouger's Colorado fourteeners — 58 named peaks, one summit at a time.">
+<link rel="stylesheet" href="styles.css?v=16">
+<script src="site.js?v=16" defer></script>
+<meta name="description" content="Gordon Gouger's Colorado fourteeners tracker — 58 named peaks, one summit at a time.">
 <meta property="og:title" content="14er Tracker — Gordon Gouger">
-<meta property="og:description" content="A personal tracker for Gordon Gouger's Colorado fourteeners — 58 named peaks, one summit at a time.">
+<meta property="og:description" content="Gordon Gouger's Colorado fourteeners tracker — 58 named peaks, one summit at a time.">
 <meta property="og:url" content="https://gordongouger.com/14ers.html">
 <meta property="og:type" content="website">
 <meta name="twitter:card" content="summary">
@@ -39,28 +39,22 @@
     </header>
 
     <h1 class="page-title scram">14er Tracker</h1>
-    <p class="role">Colorado's 58 named fourteeners — one summit at a time</p>
+    <p class="role">A Colorado summiting project</p>
 
     <div class="prose">
-      <p class="lead-text">A long-running excuse to spend more time above treeline. This is the full Colorado list: 53 <span class="term" data-note="A ranked fourteener rises at least 300 feet above the saddle connecting it to a higher peak. Five named peaks do not meet that prominence rule, but count here too.">ranked</span> peaks and five named, unranked summits.</p>
+      <p class="lead-text">A small visual record of the 58 named Colorado fourteeners: finished summits fill in, the rest wait in the background.</p>
     </div>
 
-    <div class="gallery" aria-label="Fourteener photos">
-      <div class="img-placeholder">photo coming soon</div>
-      <div class="img-placeholder">photo coming soon</div>
-      <div class="img-placeholder">photo coming soon</div>
-      <div class="img-placeholder">photo coming soon</div>
-    </div>
+    <div class="peak-preview" id="peakPreview"><p class="cap">loading the peaks…</p></div>
 
-    <div class="peak-map" id="peakMap"><p class="cap">loading the peaks…</p></div>
-    <div class="peak-list" id="peakList"><p class="cap">loading the summit log…</p></div>
-    <noscript><p class="cap">The peak graphic and summit list need JavaScript. The rest of the page is still here.</p></noscript>
+    <div class="btnrow">
+      <a class="btn" href="https://14ers.gordongouger.com">Open the full tracker <span class="ext">↗</span></a>
+    </div>
 
     <section>
       <p class="label"><span class="hash">#</span> <span class="scram">details</span></p>
-      <div class="entry"><span class="t">Peaks</span><span class="lead"></span><span class="val">58 named Colorado fourteeners</span></div>
-      <div class="entry"><span class="t">List</span><span class="lead"></span><span class="val">53 ranked · 5 named, unranked</span></div>
-      <div class="entry"><span class="t">Source</span><span class="lead"></span><span class="val"><a href="https://www.14ers.com/14ers" target="_blank" rel="noopener">14ers.com <span class="ext">↗</span></a></span></div>
+      <div class="entry"><span class="t">Challenge</span><span class="lead"></span><span class="val">58 named Colorado fourteeners</span></div>
+      <div class="entry"><span class="t">Tracker</span><span class="lead"></span><span class="val"><a href="https://14ers.gordongouger.com">14ers.gordongouger.com <span class="ext">↗</span></a></span></div>
     </section>
 
     <div class="colophon">

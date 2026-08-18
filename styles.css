@@ -111,6 +111,37 @@ section{margin-top:46px;}
 .meron-live .cap{font-size:11px; color:var(--muted); font-style:italic; margin:8px 0 0;}
 .meron-live .live-dot{display:inline-block; width:7px; height:7px; border-radius:50%; background:var(--accent); margin-right:6px; box-shadow:0 0 6px var(--accent); vertical-align:middle;}
 @media (max-width:560px){ .meron-live .stats{grid-template-columns:repeat(2,1fr);} }
+
+/* Colorado 14er tracker */
+.peak-map{margin:32px 0 12px; border:1px solid var(--line2); border-radius:8px; padding:16px 16px 14px; background:color-mix(in srgb, var(--accent) 5%, var(--bg));}
+.peak-map .cap,.peak-list .cap{font-size:11px; color:var(--muted); font-style:italic; margin:8px 0 0;}
+.peak-poster{display:block; width:100%; height:auto; overflow:visible;}
+.peak-poster .peak path{fill:color-mix(in srgb, var(--line2) 55%, var(--bg)); stroke:var(--line2); stroke-width:2; stroke-linejoin:round; transition:fill .22s,stroke .22s,filter .22s; cursor:pointer;}
+.peak-poster .peak.is-done path{stroke:var(--accent); filter:drop-shadow(0 0 4px color-mix(in srgb, var(--accent) 35%, transparent));}
+.peak-poster .peak.is-done.range-0 path,.peak-poster .peak.is-done.range-3 path{fill:var(--accent);}
+.peak-poster .peak.is-done.range-1 path,.peak-poster .peak.is-done.range-4 path{fill:color-mix(in srgb, var(--accent) 72%, var(--bg));}
+.peak-poster .peak.is-done.range-2 path,.peak-poster .peak.is-done.range-5 path{fill:color-mix(in srgb, var(--accent) 55%, var(--bg));}
+.peak-poster .peak:hover path{stroke:var(--ink);}
+.peak-label{fill:var(--bg); font-size:13px; font-weight:600; text-anchor:middle; paint-order:stroke; stroke:color-mix(in srgb, var(--accent) 65%, var(--bg)); stroke-width:2px; stroke-linejoin:round; pointer-events:none;}
+.peak-label .peak-elev{font-size:11px; font-weight:400;}
+.peak-stats{display:grid; grid-template-columns:repeat(4,1fr); gap:12px; margin-top:12px;}
+.peak-stats .stat{display:flex; flex-direction:column; min-width:0;}
+.peak-stats .n{font-size:20px; color:var(--ink); font-weight:600; line-height:1.1; font-variant-numeric:tabular-nums; white-space:nowrap;}
+.peak-stats .l{font-size:9px; text-transform:uppercase; letter-spacing:.12em; color:var(--muted); margin-top:4px;}
+.peak-list{margin-top:34px;}
+.range-group{margin:0 0 30px;}
+.range-group .label{margin-bottom:10px;}
+.peak-row{display:grid; grid-template-columns:minmax(0,1fr) auto; gap:8px 16px; align-items:baseline; border-top:1px solid var(--line); padding:10px 0; scroll-margin-top:22px; transition:background .2s,box-shadow .2s;}
+.peak-row:last-child{border-bottom:1px solid var(--line);}
+.peak-row .peak-name{color:var(--ink); min-width:0;}
+.peak-row .peak-name .unranked{color:var(--muted); font-size:10px; margin-left:5px;}
+.peak-row .peak-meta{color:var(--muted); font-size:11px; text-align:right; white-space:nowrap;}
+.peak-row .peak-log{grid-column:1 / -1; color:var(--muted); font-size:12px; margin-top:-5px;}
+.peak-row .peak-log a{margin-left:8px;}
+.peak-row.peak-flash{animation:peakflash .95s ease;}
+@keyframes peakflash{0%,100%{background:transparent;} 35%{background:color-mix(in srgb, var(--accent) 15%, transparent); box-shadow:0 0 0 5px color-mix(in srgb, var(--accent) 10%, transparent);}}
+@media (max-width:560px){ .peak-label{display:none;} .peak-map{padding:12px 10px;} .peak-stats{grid-template-columns:repeat(2,1fr); gap:12px;} .peak-row{gap:6px 10px;} .peak-row .peak-meta{font-size:10px;} }
+@media (prefers-reduced-motion:reduce){ .peak-poster .peak path,.peak-row{transition:none;} .peak-row.peak-flash{animation:none; background:color-mix(in srgb, var(--accent) 12%, transparent);} }
 .portrait{float:right; width:180px; margin:6px 0 18px 24px;}
 .portrait .img-placeholder{aspect-ratio:4/5;}
 .portrait img{display:block; width:100%; height:auto; border:1px solid var(--line2);}
@@ -256,4 +287,3 @@ html[data-theme="dark"] .login-err{color:#e57373;}
 /* Keep the bottom of an image visible inside an object-fit:cover box —
    useful when the logo/subject sits near the bottom of the frame. */
 .gallery img.anchor-bottom{object-position:center bottom;}
-

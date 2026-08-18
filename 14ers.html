@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="index, follow, noimageindex">
+<title>14er Tracker — Gordon Gouger</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css?v=15">
+<script src="site.js?v=15" defer></script>
+<meta name="description" content="A personal tracker for Gordon Gouger's Colorado fourteeners — 58 named peaks, one summit at a time.">
+<meta property="og:title" content="14er Tracker — Gordon Gouger">
+<meta property="og:description" content="A personal tracker for Gordon Gouger's Colorado fourteeners — 58 named peaks, one summit at a time.">
+<meta property="og:url" content="https://gordongouger.com/14ers.html">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary">
+<link rel="canonical" href="https://gordongouger.com/14ers.html">
+</head>
+<body>
+  <div class="wrap">
+    <header class="site-head">
+      <a class="monogram" href="index.html" aria-label="Gordon Gouger — home">
+        <svg viewBox="0 0 100 100" role="img" aria-hidden="true" fill="none" stroke-width="6.5" stroke-linecap="round" stroke-linejoin="round">
+          <path class="g-accent" d="M77.71 34 A32 32 0 1 0 82 50 L60 50"/>
+          <path class="g-ink" d="M65.59 41 A18 18 0 1 0 68 50 L54 50"/>
+        </svg>
+      </a>
+      <nav class="nav">
+        <a href="index.html">home</a>
+        <a href="about.html">about</a>
+        <a href="projects.html" aria-current="page">projects</a>
+        <a href="writing.html">writing</a>
+        <a href="resume.html">résumé</a>
+        <a href="contact.html">contact</a>
+      </nav>
+      <span class="clock" id="clock">--:--:-- MT</span>
+    </header>
+
+    <h1 class="page-title scram">14er Tracker</h1>
+    <p class="role">Colorado's 58 named fourteeners — one summit at a time</p>
+
+    <div class="prose">
+      <p class="lead-text">A long-running excuse to spend more time above treeline. This is the full Colorado list: 53 <span class="term" data-note="A ranked fourteener rises at least 300 feet above the saddle connecting it to a higher peak. Five named peaks do not meet that prominence rule, but count here too.">ranked</span> peaks and five named, unranked summits.</p>
+    </div>
+
+    <div class="gallery" aria-label="Fourteener photos">
+      <div class="img-placeholder">photo coming soon</div>
+      <div class="img-placeholder">photo coming soon</div>
+      <div class="img-placeholder">photo coming soon</div>
+      <div class="img-placeholder">photo coming soon</div>
+    </div>
+
+    <div class="peak-map" id="peakMap"><p class="cap">loading the peaks…</p></div>
+    <div class="peak-list" id="peakList"><p class="cap">loading the summit log…</p></div>
+    <noscript><p class="cap">The peak graphic and summit list need JavaScript. The rest of the page is still here.</p></noscript>
+
+    <section>
+      <p class="label"><span class="hash">#</span> <span class="scram">details</span></p>
+      <div class="entry"><span class="t">Peaks</span><span class="lead"></span><span class="val">58 named Colorado fourteeners</span></div>
+      <div class="entry"><span class="t">List</span><span class="lead"></span><span class="val">53 ranked · 5 named, unranked</span></div>
+      <div class="entry"><span class="t">Source</span><span class="lead"></span><span class="val"><a href="https://www.14ers.com/14ers" target="_blank" rel="noopener">14ers.com <span class="ext">↗</span></a></span></div>
+    </section>
+
+    <div class="colophon">
+      <a href="https://auth.gordongouger.com" data-app="auth">log in</a>
+      <button class="toggle" id="themeBtn">dark</button>
+    </div>
+  </div>
+
+  <div class="margin-note" id="marginNote"></div>
+</body>
+</html>

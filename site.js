@@ -350,6 +350,97 @@
         .catch(function () { athLive.style.display = 'none'; });
     }
 
+    /* Colorado 14er tracker — fixed peak reference data plus a tiny, personal
+       summit log. This deliberately stays client-side: both files are static,
+       same-origin JSON and a summit entry updates every view at once. */
+    var peakMap = document.getElementById('peakMap');
+    var peakList = document.getElementById('peakList');
+    if (peakMap && peakList) {
+      var PEAK_RANGES = ['Sawatch', 'San Juan', 'Sangre de Cristo', 'Elk', 'Front', 'Tenmile-Mosquito'];
+      var escPeak = function (s) {
+        var d = document.createElement('div'); d.textContent = s == null ? '' : String(s); return d.innerHTML;
+      };
+      var num = function (n) { return Number(n || 0).toLocaleString('en-US'); };
+      var prettyDate = function (s) {
+        var d = /^\d{4}-\d{2}-\d{2}$/.test(s || '') ? new Date(s + 'T12:00:00') : null;
+        return d && !isNaN(d.getTime()) ? d.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' }) : escPeak(s || 'date unknown');
+      };
+      var failPeaks = function () {
+        peakMap.innerHTML = '<p class="cap">The peak graphic could not load. Try reloading this page.</p>';
+        peakList.innerHTML = '<p class="cap">The summit list could not load. Try reloading this page.</p>';
+      };
+
+      Promise.all([
+        fetch('peaks.json', { headers: { 'Accept': 'application/json' } }).then(function (r) { if (!r.ok) throw 0; return r.json(); }),
+        fetch('summits.json', { headers: { 'Accept': 'application/json' } }).then(function (r) { if (!r.ok) throw 0; return r.json(); })
+      ]).then(function (data) {
+        var peaks = data[0], summits = data[1] || {};
+        if (!Array.isArray(peaks) || peaks.length !== 58) throw 0;
+        var done = peaks.filter(function (p) { return !!summits[p.slug]; });
+        var byRange = {};
+        PEAK_RANGES.forEach(function (range) { byRange[range] = []; });
+        peaks.forEach(function (p) { if (byRange[p.range]) byRange[p.range].push(p); });
+        var complete = PEAK_RANGES.filter(function (range) {
+          return byRange[range].length && byRange[range].every(function (p) { return !!summits[p.slug]; });
+        }).length;
+        var highest = done.length ? done.reduce(function (a, b) { return a.elev > b.elev ? a : b; }) : null;
+        var summitFeet = done.reduce(function (sum, p) { return sum + p.elev; }, 0);
+        var paths = '', labels = '';
+
+        peaks.forEach(function (p) {
+          var isDone = !!summits[p.slug], x = p.xy[0], y = p.xy[1], w = p.w, h = 175, cx = x + w / 2;
+          var rangeClass = PEAK_RANGES.indexOf(p.range);
+          paths += '<g class="peak' + (isDone ? ' is-done' : '') + ' range-' + rangeClass + '" data-slug="' + escPeak(p.slug) + '" aria-hidden="true">' +
+            '<title>' + escPeak(p.name + ' · ' + num(p.elev) + ' ft' + (isDone ? ' · summited' : '')) + '</title>' +
+            '<path d="M ' + cx + ' ' + y + ' L ' + x + ' ' + (y + h) + ' L ' + (x + w) + ' ' + (y + h) + ' Z"/></g>';
+          if (isDone) {
+            labels += '<text class="peak-label" x="' + cx + '" y="' + (y + h - 30) + '"><tspan class="peak-elev" x="' + cx + '" dy="0">' + num(p.elev) + '</tspan><tspan x="' + cx + '" dy="14">' + escPeak(p.name.replace(/^Mount /, 'Mt. ')) + '</tspan></text>';
+          }
+        });
+
+        peakMap.innerHTML =
+          '<svg class="peak-poster" viewBox="0 0 700 980" role="img" aria-label="Colorado 14ers — ' + done.length + ' of 58 summited">' + paths + labels + '</svg>' +
+          '<div class="peak-stats">' +
+            '<div class="stat"><span class="n">' + done.length + ' / 58</span><span class="l">summited</span></div>' +
+            '<div class="stat"><span class="n">' + (highest ? escPeak(highest.name.replace(/^Mount /, 'Mt. ')) : '—') + '</span><span class="l">highest</span></div>' +
+            '<div class="stat"><span class="n">' + complete + ' / 6</span><span class="l">ranges complete</span></div>' +
+            '<div class="stat"><span class="n">' + (summitFeet ? num(summitFeet) : '—') + '</span><span class="l">summit feet</span></div>' +
+          '</div>';
+
+        var listHtml = '';
+        PEAK_RANGES.forEach(function (range) {
+          var rangePeaks = byRange[range];
+          listHtml += '<section class="range-group"><p class="label"><span class="hash">#</span> ' + escPeak(range.toLowerCase()) + ' <span class="range-count">' + rangePeaks.filter(function (p) { return !!summits[p.slug]; }).length + '/' + rangePeaks.length + '</span></p>';
+          rangePeaks.forEach(function (p) {
+            var s = summits[p.slug], log = '';
+            if (s) {
+              log = '<div class="peak-log">summited ' + prettyDate(s.date);
+              if (s.strava) log += '<a href="' + escPeak(s.strava) + '" target="_blank" rel="noopener">Strava <span class="ext">↗</span></a>';
+              if (s.note) log += '<span class="peak-note"> · ' + escPeak(s.note) + '</span>';
+              log += '</div>';
+            }
+            listHtml += '<div class="peak-row' + (s ? ' is-done' : '') + '" id="peak-' + escPeak(p.slug) + '">' +
+              '<div class="peak-name">' + escPeak(p.name) + (p.ranked ? '' : '<span class="unranked">unranked</span>') + '</div>' +
+              '<div class="peak-meta">' + num(p.elev) + ' ft · class ' + p.class + '</div>' + log + '</div>';
+          });
+          listHtml += '</section>';
+        });
+        peakList.innerHTML = listHtml;
+
+        Array.prototype.slice.call(peakMap.querySelectorAll('.peak')).forEach(function (el) {
+          el.addEventListener('click', function () {
+            var row = document.getElementById('peak-' + el.dataset.slug);
+            if (!row) return;
+            row.scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'center' });
+            row.classList.remove('peak-flash');
+            void row.offsetWidth;
+            row.classList.add('peak-flash');
+            if (!reduce) setTimeout(function () { row.classList.remove('peak-flash'); }, 1000);
+          });
+        });
+      }).catch(failPeaks);
+    }
+
     /* contact form — AJAX submit to the self-hosted /contact endpoint */
     var cform = document.getElementById('contactForm');
     if (cform) {

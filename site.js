@@ -179,7 +179,7 @@
     var trackerEmbed = document.getElementById('trackerEmbed');
     if (trackerEmbed) {
       var localTracker = location.hostname === 'localhost' || location.hostname === '127.0.0.1';
-      trackerEmbed.src = localTracker ? 'http://localhost:8001/?embed=1' : 'https://14ers.gordongouger.com/?embed=1';
+      trackerEmbed.src = localTracker ? 'http://localhost:8001/?embed=1' : '/14ers-app/?embed=1';
     }
 
     /* ---- scramble-in on load + hover ---- */

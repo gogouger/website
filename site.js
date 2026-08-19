@@ -174,6 +174,14 @@
       setTheme(root.dataset.theme === 'dark' ? 'light' : 'dark');
     });
 
+    /* The portfolio embeds the separate tracker app as a compact, live poster.
+       Local previews use its own local server; production uses the subdomain. */
+    var trackerEmbed = document.getElementById('trackerEmbed');
+    if (trackerEmbed) {
+      var localTracker = location.hostname === 'localhost' || location.hostname === '127.0.0.1';
+      trackerEmbed.src = localTracker ? 'http://localhost:8001/?embed=1' : 'https://14ers.gordongouger.com/?embed=1';
+    }
+
     /* ---- scramble-in on load + hover ---- */
     var els = Array.prototype.slice.call(document.querySelectorAll('.scram'));
     els.forEach(function (el, i) {

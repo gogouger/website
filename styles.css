@@ -114,6 +114,8 @@ section{margin-top:46px;}
 
 /* Colorado 14er tracker */
 .peak-map,.peak-preview{margin:32px 0 12px; border:1px solid var(--line2); border-radius:8px; padding:16px 16px 14px; background:color-mix(in srgb, var(--accent) 5%, var(--bg));}
+.tracker-embed{margin:32px 0 12px; border:1px solid var(--line2); border-radius:8px; overflow:hidden; background:var(--bg);}
+.tracker-embed iframe{display:block; width:100%; height:720px; border:0;}
 .peak-map .cap,.peak-list .cap{font-size:11px; color:var(--muted); font-style:italic; margin:8px 0 0;}
 .peak-poster{display:block; width:100%; height:auto; overflow:visible;}
 .peak-preview-link{display:block; border:0; color:inherit;}
@@ -142,7 +144,7 @@ section{margin-top:46px;}
 .peak-row .peak-log a{margin-left:8px;}
 .peak-row.peak-flash{animation:peakflash .95s ease;}
 @keyframes peakflash{0%,100%{background:transparent;} 35%{background:color-mix(in srgb, var(--accent) 15%, transparent); box-shadow:0 0 0 5px color-mix(in srgb, var(--accent) 10%, transparent);}}
-@media (max-width:560px){ .peak-label{display:none;} .peak-map,.peak-preview{padding:12px 10px;} .peak-stats{grid-template-columns:repeat(2,1fr); gap:12px;} .peak-row{gap:6px 10px;} .peak-row .peak-meta{font-size:10px;} }
+@media (max-width:560px){ .peak-label{display:none;} .peak-map,.peak-preview{padding:12px 10px;} .tracker-embed iframe{height:500px;} .peak-stats{grid-template-columns:repeat(2,1fr); gap:12px;} .peak-row{gap:6px 10px;} .peak-row .peak-meta{font-size:10px;} }
 @media (prefers-reduced-motion:reduce){ .peak-poster .peak path,.peak-row{transition:none;} .peak-row.peak-flash{animation:none; background:color-mix(in srgb, var(--accent) 12%, transparent);} }
 .portrait{float:right; width:180px; margin:6px 0 18px 24px;}
 .portrait .img-placeholder{aspect-ratio:4/5;}

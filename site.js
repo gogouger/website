@@ -180,8 +180,8 @@
     if (trackerEmbed) {
       var localTracker = location.hostname === 'localhost' || location.hostname === '127.0.0.1';
       trackerEmbed.src = localTracker
-        ? 'http://localhost:8001/?embed=1&widget=ribbon-lab'
-        : '/14ers-app/?embed=1&widget=ribbon-lab';
+        ? 'http://localhost:8001/?embed=1&widget=ribbon-lab&v=terrain-scene-1'
+        : '/14ers-app/?embed=1&widget=ribbon-lab&v=terrain-scene-1';
     }
 
     /* ---- scramble-in on load + hover ---- */

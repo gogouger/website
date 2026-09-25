@@ -485,12 +485,29 @@
     var cform = document.getElementById('contactForm');
     if (cform) {
       var cstatus = document.getElementById('contactStatus');
+      var turnstileWidgetId = null;
       var setStatus = function (msg, ok) {
         if (!cstatus) return;
         cstatus.hidden = false;
         cstatus.textContent = msg;
         cstatus.style.color = ok ? 'var(--accent)' : '#d9534f';
       };
+      fetch('/contact/config', { headers: { 'Accept': 'application/json' } })
+        .then(function (r) { return r.ok ? r.json() : Promise.reject(); })
+        .then(function (cfg) {
+          if (!cfg.turnstile_site_key) throw new Error('missing site key');
+          var renderTurnstile = function () {
+            if (!window.turnstile) return setTimeout(renderTurnstile, 100);
+            turnstileWidgetId = window.turnstile.render('#turnstileWidget', {
+              sitekey: cfg.turnstile_site_key,
+              action: 'contact',
+              theme: 'auto',
+              appearance: 'interaction-only'
+            });
+          };
+          renderTurnstile();
+        })
+        .catch(function () { setStatus('Message verification is unavailable — please try again later.', false); });
       cform.addEventListener('submit', function (e) {
         e.preventDefault();
         var btn = cform.querySelector('button[type=submit]');
@@ -513,7 +530,10 @@
             }
           })
           .catch(function () { setStatus('Network error — try again, or reach me on LinkedIn.', false); })
-          .finally(function () { btn.disabled = false; btn.textContent = label; });
+          .finally(function () {
+            btn.disabled = false; btn.textContent = label;
+            if (window.turnstile && turnstileWidgetId !== null) window.turnstile.reset(turnstileWidgetId);
+          });
       });
     }
   });

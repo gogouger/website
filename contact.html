@@ -9,7 +9,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="styles.css?v=16">
-<script src="site.js?v=16" defer></script>
+<script src="site.js?v=17" defer></script>
 <meta name="description" content="Get in touch with Gordon Gouger.">
 <meta property="og:title" content="Contact — Gordon Gouger">
 <meta property="og:description" content="Get in touch with Gordon Gouger.">
@@ -17,6 +17,7 @@
 <meta property="og:type" content="website">
 <meta name="twitter:card" content="summary">
 <link rel="canonical" href="https://gordongouger.com/contact.html">
+<script src="https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit" defer></script>
 </head>
 <body>
   <div class="wrap">
@@ -42,6 +43,10 @@
     <p class="intro">Have a question, a project in mind, or just want to say hello? Send a note and I'll get back to you.</p>
 
     <form class="form" id="contactForm" action="/contact" method="POST" enctype="multipart/form-data">
+      <div aria-hidden="true" style="position:absolute;left:-10000px;height:1px;width:1px;overflow:hidden;">
+        <label for="website">Website</label>
+        <input id="website" name="website" type="text" tabindex="-1" autocomplete="off">
+      </div>
       <div class="field">
         <label for="name">Name</label>
         <input id="name" name="name" type="text" autocomplete="name" required>
@@ -57,8 +62,9 @@
       <div class="field">
         <label for="files">Attachments <span style="color:var(--muted);font-weight:normal;font-size:12px;">— optional, up to 3 files, 5 MB each</span></label>
         <input id="files" name="files" type="file" multiple
-               accept=".pdf,.doc,.docx,.txt,.png,.jpg,.jpeg,.webp,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,text/plain,image/*">
+               accept=".pdf,.txt,.png,.jpg,.jpeg,.webp,application/pdf,text/plain,image/png,image/jpeg,image/webp">
       </div>
+      <div id="turnstileWidget"></div>
       <button class="btn" type="submit">Send message</button>
       <p class="form-status" id="contactStatus" role="status" hidden></p>
     </form>

@@ -63,16 +63,14 @@
       el.href = location.protocol + '//' + el.getAttribute('data-app') + '.' + _base + '/';
     });
 
-    /* ---- single sign-on: INLINE login (no separate page) ----
-       One Authelia session, scoped to ggouger.localhost, spans the site, Athletic
-       Analytics, and Library. The /__auth* paths are same-origin proxies to Authelia (see Caddyfile),
-       so we log in/out from a modal right here and just update the button. Falls back
-       to the Authelia portal link if the site is opened outside the caddy stack. */
+    /* ---- single sign-on ----
+       Every app delegates authentication to the central Authelia portal so passkeys,
+       recovery, lockout, and session policy are enforced in exactly one place. */
     (function () {
       var authEls = document.querySelectorAll('[data-app="auth"]');
       if (!authEls.length) return;
       var authHost = location.protocol + '//auth.' + _base;
-      var inlineActive = false, authed = false, modal = null, pendingHref = null;
+      var authed = false;
 
       function renderButton(d) {
         var here = encodeURIComponent(location.href);
@@ -85,72 +83,7 @@
       function refresh() {
         return fetch('/__authstate', { credentials: 'include', headers: { 'Accept': 'application/json' } })
           .then(function (r) { if (!r.ok) throw 0; return r.json(); })
-          .then(function (s) { inlineActive = true; renderButton(s && s.data); });
-      }
-
-      function buildModal() {
-        if (modal) return modal;
-        modal = document.createElement('div');
-        modal.className = 'login-modal';
-        /* critical layout set inline so it's ALWAYS a centered overlay, even if a
-           stale/cached styles.css is missing the newer .login-* rules. */
-        modal.style.cssText = 'position:fixed;inset:0;z-index:60;display:none;align-items:center;justify-content:center;padding:20px;background:rgba(8,10,9,.55)';
-        modal.innerHTML =
-          '<div class="login-card" role="dialog" aria-modal="true" aria-label="Log in">' +
-            '<button class="login-x" type="button" aria-label="Close">×</button>' +
-            '<p class="label"><span class="hash">#</span> <span>log in</span></p>' +
-            '<p class="login-sub">One login for the site, Athletic Analytics &amp; Library.</p>' +
-            '<form class="login-form" novalidate>' +
-              '<div class="field"><label for="lm-user">Username</label>' +
-                '<input id="lm-user" name="username" autocomplete="username" autocapitalize="off" spellcheck="false" required></div>' +
-              '<div class="field"><label for="lm-pass">Password</label>' +
-                '<input id="lm-pass" name="password" type="password" autocomplete="current-password" required></div>' +
-              '<p class="login-err" role="alert" hidden></p>' +
-              '<button class="btn" type="submit">Sign in</button>' +
-            '</form>' +
-          '</div>';
-        document.body.appendChild(modal);
-        /* card + chrome styled inline too (theme-aware via CSS vars), so the overlay
-           renders correctly without depending on the cached stylesheet. */
-        modal.querySelector('.login-card').style.cssText = 'position:relative;width:100%;max-width:360px;background:var(--bg);color:var(--fg);border:1px solid var(--line2);border-radius:8px;padding:24px;box-shadow:0 18px 50px rgba(0,0,0,.3)';
-        modal.querySelector('.login-x').style.cssText = 'position:absolute;top:8px;right:10px;background:none;border:0;color:var(--muted);font-size:22px;line-height:1;cursor:pointer;padding:2px 7px';
-        modal.querySelector('.login-sub').style.cssText = 'color:var(--muted);font-size:12.5px;margin:0 0 18px';
-        var form = modal.querySelector('.login-form');
-        var err = modal.querySelector('.login-err');
-        err.style.cssText = 'color:#d9534f;font-size:12.5px;margin:0 0 12px';
-        var sBtn = form.querySelector('button[type=submit]');
-        sBtn.style.cssText = 'width:100%;background:none;cursor:pointer;margin-top:2px';
-        var close = function () { modal.style.display = 'none'; modal.classList.remove('show'); pendingHref = null; };
-        modal.addEventListener('mousedown', function (e) { if (e.target === modal) close(); });
-        modal.querySelector('.login-x').addEventListener('click', close);
-        document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && modal.style.display === 'flex') close(); });
-        form.addEventListener('submit', function (e) {
-          e.preventDefault(); err.hidden = true;
-          sBtn.disabled = true; sBtn.textContent = 'signing in…';
-          fetch('/__authlogin', {
-            method: 'POST', credentials: 'include',
-            headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
-            body: JSON.stringify({ username: form.username.value, password: form.password.value, keepMeLoggedIn: true, requestMethod: 'GET', targetURL: location.href })
-          })
-            .then(function (r) { return r.json().then(function (j) { return { ok: r.ok, j: j }; }); })
-            .then(function (res) {
-              if (res.ok && res.j && res.j.status === 'OK') {
-                var go = pendingHref; close(); form.reset();
-                if (go) { location.href = go; } else { refresh(); }
-                return;
-              }
-              throw new Error((res.j && res.j.message) || 'Invalid username or password');
-            })
-            .catch(function (e2) { err.textContent = (e2 && e2.message) || 'Login failed'; err.hidden = false; })
-            .finally(function () { sBtn.disabled = false; sBtn.textContent = 'Sign in'; });
-        });
-        return modal;
-      }
-      function openModal(href) {
-        pendingHref = href || null;
-        var m = buildModal();
-        m.style.display = 'flex'; m.classList.add('show');
-        setTimeout(function () { var u = modal.querySelector('#lm-user'); if (u) u.focus(); }, 30);
+          .then(function (s) { renderButton(s && s.data); });
       }
       function logout() {
         fetch('/__authlogout', { method: 'POST', credentials: 'include', headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' }, body: '{}' })
@@ -160,13 +93,13 @@
 
       authEls.forEach(function (el) {
         el.addEventListener('click', function (e) {
-          if (!inlineActive) return;               /* outside caddy stack: use the href fallback */
           e.preventDefault();
-          if (authed) logout(); else openModal(null);
+          if (authed) logout();
+          else location.href = authHost + '/?rd=' + encodeURIComponent(location.href);
         });
       });
 
-      refresh().catch(function () { /* same-origin auth proxy unreachable; keep portal-link fallback */ });
+      refresh().catch(function () { renderButton(null); });
     })();
 
     var btn = document.getElementById('themeBtn');

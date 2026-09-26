@@ -8,7 +8,7 @@ Live at <https://gordongouger.com>.
 
 - **HTML / CSS / vanilla JS** — no build step, no framework
 - **[Caddy](https://caddyserver.com/)** serves the files in production (behind Cloudflare's proxy)
-- Inline single sign-on modal hits same-origin `/__auth*` proxies (configured in [infra/Caddyfile](https://github.com/gogouger/infra)) so one login spans the site, [Athletic Analytics](https://github.com/gogouger/athletic-analytics), and [Library](https://github.com/gogouger/library)
+- Central passkey sign-in at `auth.gordongouger.com` issues one shared session for Finance, the site, [Athletic Analytics](https://github.com/gogouger/athletic-analytics), [Library](https://github.com/gogouger/library), and the 14er tracker. Same-origin `/__authstate` and `/__authlogout` proxies expose only session state and logout.
 - A small self-hosted [contact form endpoint](https://github.com/gogouger/infra) handles `POST /contact` (FastAPI, multipart, attaches up to 3 files per submission via iCloud SMTP)
 
 ## Pages

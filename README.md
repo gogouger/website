@@ -16,7 +16,8 @@ Live at <https://gordongouger.com>.
 - `index.html` — landing (what I do, selected work, writing, résumé)
 - `about.html` — longer bio + photos
 - `projects.html` — project detail
-- `meron.html` — Athletic Analytics’ marketing page (lives here instead of meron.gordongouger.com)
+- `athletic-analytics.html` — Athletic Analytics’ marketing page (lives here instead of meron.gordongouger.com)
+- `library.html` — Library’s marketing page and live public shelf preview
 - `writing.html` — notes, papers, talks
 - `resume.html` — interactive résumé (plus a PDF in `resume/`)
 - `contact.html` — the form

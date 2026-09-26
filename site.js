@@ -48,10 +48,10 @@
   setTheme(saved);
 
   document.addEventListener('DOMContentLoaded', function () {
-    /* resolve app links (Books / Meron / login) to the right apex for
+    /* resolve app links (Library / Athletic Analytics / login) to the right apex for
        this environment. Handles both the dev/local *.ggouger.localhost
        and prod *.gordongouger.com — when we're already on a subdomain
-       (e.g. opened from meron.<apex>), strip it so the data-app prefix
+       (e.g. opened from athletic-analytics.<apex>), strip it so the data-app prefix
        is appended to the apex, not double-stacked. */
     var _base = (function () {
       var h = location.hostname;
@@ -64,8 +64,8 @@
     });
 
     /* ---- single sign-on: INLINE login (no separate page) ----
-       One Authelia session, scoped to ggouger.localhost, spans the site + Meron +
-       Books. The /__auth* paths are same-origin proxies to Authelia (see Caddyfile),
+       One Authelia session, scoped to ggouger.localhost, spans the site, Athletic
+       Analytics, and Library. The /__auth* paths are same-origin proxies to Authelia (see Caddyfile),
        so we log in/out from a modal right here and just update the button. Falls back
        to the Authelia portal link if the site is opened outside the caddy stack. */
     (function () {
@@ -233,14 +233,14 @@
       setInterval(function () { ci = (ci + 1) % states.length; scramble(cur, states[ci], 600); }, 4200);
     }
 
-    /* live Meron telemetry (project page) — safe aggregates via the same-origin
-       /__meron/summary proxy; renders stat cards + a weekly-mileage sparkline. */
-    var meronLive = document.getElementById('meron-live');
-    if (meronLive) {
-      fetch('/__meron/summary', { headers: { 'Accept': 'application/json' } })
+    /* live Athletic Analytics telemetry (project page) — safe aggregates via the
+       same-origin summary proxy; renders stat cards + a weekly-mileage sparkline. */
+    var athleticsLive = document.getElementById('athletics-live');
+    if (athleticsLive) {
+      fetch('/__athletics/summary', { headers: { 'Accept': 'application/json' } })
         .then(function (r) { return r.ok ? r.json() : null; })
         .then(function (s) {
-          if (!s || !s.ok) { meronLive.style.display = 'none'; return; }
+          if (!s || !s.ok) { athleticsLive.style.display = 'none'; return; }
           var fmt = function (n) { return (n || 0).toLocaleString('en-US'); };
           var weekly = s.weekly_miles || [], spark = '';
           if (weekly.length > 1) {
@@ -251,7 +251,7 @@
             spark = '<svg class="spark" viewBox="0 0 ' + W + ' ' + H + '" preserveAspectRatio="none" aria-hidden="true"><polyline fill="none" stroke="var(--accent)" stroke-width="1.5" points="' + pts + '"/></svg>';
           }
           var lm = s.lift_maxes || {};
-          meronLive.innerHTML =
+          athleticsLive.innerHTML =
             '<div class="ml-h">running</div>' +
             '<div class="stats">' +
               '<div class="stat"><span class="n">' + fmt(s.runs) + '</span><span class="l">runs</span></div>' +
@@ -268,15 +268,15 @@
             '</div>' +
             '<p class="cap"><span class="live-dot"></span>live from Athletic Analytics · running &amp; lifting</p>';
         })
-        .catch(function () { meronLive.style.display = 'none'; });
+        .catch(function () { athleticsLive.style.display = 'none'; });
     }
 
-    /* Athenaeum shelf preview — pulls Gordon's favorited books straight from
-       the public books API (no proxy needed; CORS is open). Renders
+    /* Library shelf preview — pulls Gordon's favorited books straight from
+       the public Library API (no proxy needed; CORS is open). Renders
        all-time favorites with a gold border, then a top-5 per genre. */
-    var athLive = document.getElementById('athenaeum-live');
-    if (athLive) {
-      var BOOKS_HOST = 'https://books.gordongouger.com';
+    var libraryLive = document.getElementById('library-live');
+    if (libraryLive) {
+      var BOOKS_HOST = 'https://library.gordongouger.com';
       var USERNAME = 'ggouger';
       var USER_ID = 2;
 
@@ -310,7 +310,7 @@
         .then(function (r) { return r.ok ? r.json() : null; })
         .then(function (d) {
           if (!d || !d.books || !d.books.length) {
-            athLive.style.display = 'none';
+            libraryLive.style.display = 'none';
             return;
           }
           var books = d.books;
@@ -331,9 +331,9 @@
           var html = '<div class="preview-data-line"><span>' + shelf.length + ' picks from the public shelf</span><span><i class="live-dot"></i>live</span></div><div class="ath-row">';
           shelf.forEach(function (b) { html += bookCard(b); });
           html += '</div>';
-          athLive.innerHTML = html;
+          libraryLive.innerHTML = html;
         })
-        .catch(function () { athLive.style.display = 'none'; });
+        .catch(function () { libraryLive.style.display = 'none'; });
     }
 
     /* Colorado 14er project-page preview — the full list lives on the dedicated

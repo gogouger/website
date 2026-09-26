@@ -179,6 +179,26 @@
     var trackerEmbed = document.getElementById('trackerEmbed');
     if (trackerEmbed) {
       var localTracker = location.hostname === 'localhost' || location.hostname === '127.0.0.1';
+      trackerEmbed.addEventListener('load', function () {
+        /* The preview is a poster, not a second scrollable website. Because the
+           production embed is served from this origin, trim it to the terrain
+           canvas and size that canvas to the frame. The full tracker remains
+           interactive behind the adjacent link. */
+        try {
+          var frameDoc = trackerEmbed.contentDocument;
+          if (!frameDoc || !frameDoc.head) return;
+          var previewStyle = frameDoc.createElement('style');
+          previewStyle.textContent =
+            'html,body{height:100%!important;overflow:hidden!important}' +
+            'body.embed main{height:100%!important;padding:0!important}' +
+            'body.embed .tracker-grid,body.embed .poster-pane,body.embed .ribbon-lab-pane{height:100%!important;min-height:0!important}' +
+            'body.embed .ribbon-lab-heading,body.embed .ribbon-progress-strip,body.embed .ribbon-insights,body.embed .terrain-switcher,body.embed .ribbon-key,body.embed .ribbon-help,body.embed .range-photo-heading,body.embed .range-photo-grid{display:none!important}' +
+            'body.embed .terrain-webgl-shell{height:100%!important;min-height:0!important;border:0!important;border-radius:0!important;box-shadow:none!important}' +
+            'body.embed .terrain-rotate-note,body.embed .terrain-axis-key{display:none!important}';
+          frameDoc.head.appendChild(previewStyle);
+          trackerEmbed.contentWindow.dispatchEvent(new Event('resize'));
+        } catch (e) { /* Cross-origin local fallback keeps its normal embed view. */ }
+      });
       trackerEmbed.src = localTracker
         ? 'http://localhost:8001/?embed=1&widget=ribbon-lab&v=preview-2'
         : '/14ers-app/?embed=1&widget=ribbon-lab&v=preview-2';

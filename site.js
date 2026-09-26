@@ -99,7 +99,7 @@
           '<div class="login-card" role="dialog" aria-modal="true" aria-label="Log in">' +
             '<button class="login-x" type="button" aria-label="Close">×</button>' +
             '<p class="label"><span class="hash">#</span> <span>log in</span></p>' +
-            '<p class="login-sub">One login for the site, Meron &amp; Athenaeum.</p>' +
+            '<p class="login-sub">One login for the site, Athletic Analytics &amp; Library.</p>' +
             '<form class="login-form" novalidate>' +
               '<div class="field"><label for="lm-user">Username</label>' +
                 '<input id="lm-user" name="username" autocomplete="username" autocapitalize="off" spellcheck="false" required></div>' +
@@ -180,8 +180,8 @@
     if (trackerEmbed) {
       var localTracker = location.hostname === 'localhost' || location.hostname === '127.0.0.1';
       trackerEmbed.src = localTracker
-        ? 'http://localhost:8001/?embed=1&widget=ribbon-lab&v=terrain-scene-1'
-        : '/14ers-app/?embed=1&widget=ribbon-lab&v=terrain-scene-1';
+        ? 'http://localhost:8001/?embed=1&widget=ribbon-lab&v=preview-2'
+        : '/14ers-app/?embed=1&widget=ribbon-lab&v=preview-2';
     }
 
     /* ---- scramble-in on load + hover ---- */
@@ -266,7 +266,7 @@
               '<div class="stat"><span class="n">' + (lm.squat || 0) + '</span><span class="l">squat · lb</span></div>' +
               '<div class="stat"><span class="n">' + (lm.deadlift || 0) + '</span><span class="l">deadlift · lb</span></div>' +
             '</div>' +
-            '<p class="cap"><span class="live-dot"></span>live from the Meron dashboard · running &amp; lifting</p>';
+            '<p class="cap"><span class="live-dot"></span>live from Athletic Analytics · running &amp; lifting</p>';
         })
         .catch(function () { meronLive.style.display = 'none'; });
     }
@@ -279,7 +279,6 @@
       var BOOKS_HOST = 'https://books.gordongouger.com';
       var USERNAME = 'ggouger';
       var USER_ID = 2;
-      var GENRES = ['Religious', 'Fiction', 'Other'];
 
       var esc = function (s) {
         var d = document.createElement('div'); d.textContent = s || ''; return d.innerHTML;
@@ -316,45 +315,22 @@
           }
           var books = d.books;
           var allTime = books.filter(function (b) { return b.is_all_time_fav === 1; });
-
-          var byGenre = {};
-          GENRES.forEach(function (g) { byGenre[g] = []; });
-          books.forEach(function (b) {
-            var g = (b.manual_category && byGenre[b.manual_category]) ? b.manual_category : 'Other';
-            byGenre[g].push(b);
-          });
           var tier = function (b) {
             if (b.is_all_time_fav === 1) return 0;
             if (b.is_second_fav === 1) return 1;
             return 2;
           };
-          GENRES.forEach(function (g) {
-            byGenre[g].sort(function (a, b) {
-              var t = tier(a) - tier(b);
-              if (t !== 0) return t;
-              var ar = a.rating || 0, br = b.rating || 0;
-              if (br !== ar) return br - ar;
-              return (a.sort_title || a.title || '').localeCompare(b.sort_title || b.title || '');
-            });
-            byGenre[g] = byGenre[g].slice(0, 5);
+          var ordered = books.slice().sort(function (a, b) {
+            var t = tier(a) - tier(b);
+            if (t !== 0) return t;
+            var ar = a.rating || 0, br = b.rating || 0;
+            if (br !== ar) return br - ar;
+            return (a.sort_title || a.title || '').localeCompare(b.sort_title || b.title || '');
           });
-
-          var html = '';
-          if (allTime.length) {
-            html += '<div class="ml-h">all-time favorites</div>';
-            html += '<div class="ath-row">';
-            allTime.forEach(function (b) { html += bookCard(b); });
-            html += '</div>';
-          }
-          GENRES.forEach(function (g) {
-            var items = byGenre[g];
-            if (!items.length) return;
-            html += '<div class="ml-h ml-h2">top ' + items.length + ' &middot; ' + g.toLowerCase() + '</div>';
-            html += '<div class="ath-row">';
-            items.forEach(function (b) { html += bookCard(b); });
-            html += '</div>';
-          });
-          html += '<p class="cap"><span class="live-dot"></span>live from the Athenaeum DB</p>';
+          var shelf = allTime.concat(ordered.filter(function (b) { return allTime.indexOf(b) < 0; })).slice(0, 6);
+          var html = '<div class="preview-data-line"><span>' + shelf.length + ' picks from the public shelf</span><span><i class="live-dot"></i>live</span></div><div class="ath-row">';
+          shelf.forEach(function (b) { html += bookCard(b); });
+          html += '</div>';
           athLive.innerHTML = html;
         })
         .catch(function () { athLive.style.display = 'none'; });

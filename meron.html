@@ -4,15 +4,15 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="robots" content="index, follow, noimageindex">
-<title>Meron — Gordon Gouger</title>
+<title>Athletic Analytics — Gordon Gouger</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="styles.css?v=16">
-<script src="site.js?v=16" defer></script>
-<meta name="description" content="Meron — a self-hosted hybrid run & lift training dashboard by Gordon Gouger.">
-<meta property="og:title" content="Meron — Gordon Gouger">
-<meta property="og:description" content="Meron — a self-hosted hybrid run & lift training dashboard by Gordon Gouger.">
+<link rel="stylesheet" href="styles.css?v=20">
+<script src="site.js?v=20" defer></script>
+<meta name="description" content="Athletic Analytics — a self-hosted hybrid run & lift training dashboard by Gordon Gouger.">
+<meta property="og:title" content="Athletic Analytics — Gordon Gouger">
+<meta property="og:description" content="Athletic Analytics — a self-hosted hybrid run & lift training dashboard by Gordon Gouger.">
 <meta property="og:url" content="https://gordongouger.com/meron.html">
 <meta property="og:type" content="website">
 <meta name="twitter:card" content="summary">
@@ -38,15 +38,22 @@
       <span class="clock" id="clock">--:--:-- MT</span>
     </header>
 
-    <h1 class="page-title scram">Meron</h1>
+    <h1 class="page-title scram">Athletic Analytics</h1>
     <p class="role">A private run &amp; lift dashboard</p>
 
     <div class="prose">
-      <p class="lead-text">Meron is a hybrid training dashboard — built for athletes who run <em>and</em> lift, where no existing tool does both well. It pulls your endurance work (rides, runs, <span class="term" data-note="FIT files — the binary activity format Garmin uses for rides and runs.">FIT files</span>) and your strength training into one view: routes on a map, training-load curves, race predictions, lift-PR progression, and a chat widget that answers questions across both sides of your training.</p>
-      <p>It started because the existing options forced you to pick one sport: an endurance silo (Strava) or a lifting silo (Hevy, Strong). Meron treats your training as one program. Everything runs locally on your own server; the data stays yours.</p>
+      <p class="lead-text">Athletic Analytics is a hybrid training dashboard — built for athletes who run <em>and</em> lift, where no existing tool does both well. It pulls your endurance work (rides, runs, <span class="term" data-note="FIT files — the binary activity format Garmin uses for rides and runs.">FIT files</span>) and your strength training into one view: routes on a map, training-load curves, race predictions, lift-PR progression, and a chat widget that answers questions across both sides of your training.</p>
+      <p>It started because the existing options forced you to pick one sport: an endurance silo (Strava) or a lifting silo (Hevy, Strong). Athletic Analytics treats your training as one program. Everything runs locally on your own server; the data stays yours.</p>
     </div>
 
-    <div id="meron-live" class="meron-live"><p class="cap">loading live telemetry…</p></div>
+    <section class="app-preview app-preview-meron" aria-label="Live Athletic Analytics preview">
+      <div class="app-preview-head">
+        <div><p class="preview-kicker">Live preview</p><h2>Training at a glance</h2></div>
+        <a href="https://meron.gordongouger.com" data-app="meron">Open Athletic Analytics ↗</a>
+      </div>
+      <div id="meron-live" class="meron-live"><p class="cap">loading training telemetry…</p></div>
+      <p class="preview-note">A compact read from Athletic Analytics’ public overview; routes and full history stay inside the private app.</p>
+    </section>
 
     <section>
       <p class="label"><span class="hash">#</span> <span class="scram">details</span></p>
@@ -55,8 +62,8 @@
     </section>
 
     <div class="btnrow">
-      <a class="btn" href="https://meron.gordongouger.com" data-app="meron" target="_blank" rel="noopener">Open Meron (live)</a>
-      <a class="btn ghost" href="https://github.com/gogouger/meron" target="_blank" rel="noopener">View on GitHub</a>
+      <a class="btn" href="https://meron.gordongouger.com" data-app="meron" target="_blank" rel="noopener">Open Athletic Analytics</a>
+      <a class="btn ghost" href="https://github.com/gogouger/athletic-analytics" target="_blank" rel="noopener">View on GitHub</a>
     </div>
 
     <div class="colophon">

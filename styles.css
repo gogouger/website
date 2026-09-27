@@ -52,6 +52,9 @@ a:hover{text-shadow:0 0 7px color-mix(in srgb, var(--accent) 45%, transparent);}
 .nav a:hover{color:var(--accent);}
 .nav a[aria-current="page"]{color:var(--ink); border-bottom-color:var(--accent);}
 .clock{margin-left:auto; color:var(--muted); font-size:12px; letter-spacing:.14em; text-transform:uppercase; font-variant-numeric:tabular-nums; white-space:nowrap;}
+.site-auth{flex:0 0 auto;border:1px solid var(--line2);padding:6px 9px;color:var(--ink);font-size:10px;letter-spacing:.08em;text-transform:uppercase;white-space:nowrap;}
+.site-auth:hover{border-color:var(--accent);}
+@media(max-width:720px){.site-head{align-items:flex-start;flex-wrap:wrap}.site-head .nav{order:3;width:100%;gap:13px}.clock{margin-left:auto}.site-auth{margin-left:auto}.site-head:has(.site-auth) .clock{margin-left:0}}
 
 /* ---- masthead ---- */
 h1{font-size:clamp(36px,8vw,56px); font-weight:600; color:var(--ink); letter-spacing:-.015em; margin:34px 0 4px; line-height:1.02;}

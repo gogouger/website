@@ -63,6 +63,19 @@
       el.href = location.protocol + '//' + el.getAttribute('data-app') + '.' + _base + '/';
     });
 
+    /* Keep the portfolio's utility navigation consistent with every app. */
+    var siteHead = document.querySelector('.site-head');
+    var projectsLink = siteHead && siteHead.querySelector('.nav a[href$="projects.html"]');
+    if (projectsLink) projectsLink.textContent = 'all projects';
+    if (siteHead && !siteHead.querySelector('.site-auth')) {
+      var siteAuth = document.createElement('a');
+      siteAuth.className = 'site-auth';
+      siteAuth.setAttribute('data-app', 'auth');
+      siteAuth.href = location.protocol + '//auth.' + _base + '/';
+      siteAuth.textContent = 'owner sign in';
+      siteHead.appendChild(siteAuth);
+    }
+
     /* ---- single sign-on ----
        Every app delegates authentication to the central Authelia portal so passkeys,
        recovery, lockout, and session policy are enforced in exactly one place. */
@@ -76,7 +89,7 @@
         var here = encodeURIComponent(location.href);
         authed = !!(d && d.authentication_level >= 1);
         authEls.forEach(function (el) {
-          el.textContent = authed ? (d.username ? ('log out (' + d.username + ')') : 'log out') : 'log in';
+          el.textContent = authed ? (d.username ? (d.username + ' · sign out') : 'sign out') : 'owner sign in';
           el.href = authed ? (authHost + '/logout?rd=' + here) : (authHost + '/?rd=' + here); /* no-JS fallback */
         });
       }

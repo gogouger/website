@@ -199,42 +199,50 @@
       setInterval(function () { ci = (ci + 1) % states.length; scramble(cur, states[ci], 600); }, 4200);
     }
 
-    /* live Athletic Analytics telemetry (project page) — safe aggregates via the
-       same-origin summary proxy; renders stat cards + a weekly-mileage sparkline. */
+    /* Live Athletic Analytics telemetry — safe, aligned weekly aggregates only.
+       The preview deliberately tells a combined training story without exposing
+       routes, dates, individual activities, or the private application shell. */
     var athleticsLive = document.getElementById('athletics-live');
     if (athleticsLive) {
+      var renderAthletics = function (s, sample) {
+        var fmt = function (n) { return (n || 0).toLocaleString('en-US'); };
+        var training = Array.isArray(s.weekly_training) && s.weekly_training.length
+          ? s.weekly_training
+          : (s.weekly_miles || []).map(function (miles) { return { run_miles: miles, lift_sessions: 0 }; });
+        var recent = training.slice(-4);
+        var recentMiles = recent.reduce(function (sum, week) { return sum + (Number(week.run_miles) || 0); }, 0);
+        var recentLifts = recent.reduce(function (sum, week) { return sum + (Number(week.lift_sessions) || 0); }, 0);
+        var maxMiles = Math.max.apply(null, training.map(function (week) { return Number(week.run_miles) || 0; }).concat([1]));
+        var maxLifts = Math.max.apply(null, training.map(function (week) { return Number(week.lift_sessions) || 0; }).concat([1]));
+        var W = 176, runTop = 5, runH = 36, liftTop = 54, liftH = 12;
+        var chart = training.length ? '<svg class="training-rhythm" viewBox="0 0 ' + W + ' 72" role="img" aria-label="Recent weekly running miles and lifting sessions">' +
+          '<line class="training-grid" x1="0" x2="' + W + '" y1="46" y2="46"/><line class="training-grid" x1="0" x2="' + W + '" y1="69" y2="69"/>' +
+          training.map(function (week, i) {
+            var slot = W / training.length, x = i * slot + Math.max(1, slot * .18), width = Math.max(2, slot * .64);
+            var miles = Number(week.run_miles) || 0, lifts = Number(week.lift_sessions) || 0;
+            var runHeight = miles / maxMiles * runH, liftHeight = lifts / maxLifts * liftH;
+            return '<rect class="run-bar" x="' + x.toFixed(1) + '" y="' + (runTop + runH - runHeight).toFixed(1) + '" width="' + width.toFixed(1) + '" height="' + runHeight.toFixed(1) + '" rx="1"/>' +
+              '<rect class="lift-bar" x="' + x.toFixed(1) + '" y="' + (liftTop + liftH - liftHeight).toFixed(1) + '" width="' + width.toFixed(1) + '" height="' + liftHeight.toFixed(1) + '" rx="1"/>';
+          }).join('') + '</svg>' : '<p class="training-empty">No recent weeks are available yet.</p>';
+        var insight = recentMiles || recentLifts
+          ? 'Last four weeks: ' + recentMiles.toFixed(1) + ' running miles and ' + fmt(recentLifts) + ' lift sessions.'
+          : 'No recent training has been recorded in the four-week window.';
+        athleticsLive.innerHTML =
+          '<div class="preview-data-line"><span>' + (sample ? 'illustrative sample state' : 'last 16 weeks · aggregate only') + '</span><span>' + (sample ? 'sample' : '<i class="live-dot"></i>live') + '</span></div>' +
+          '<div class="training-summary"><div><span class="training-number">' + (Number(s.this_week_miles) || 0).toFixed(1) + '</span><span>mi this week</span></div><div><span class="training-number">' + fmt(s.this_week_lift_sessions) + '</span><span>lifts this week</span></div><div><span class="training-number">' + (Number(s.this_month_miles) || 0).toFixed(1) + '</span><span>mi this month</span></div><div><span class="training-number">' + fmt(s.this_month_lift_sessions) + '</span><span>lifts this month</span></div></div>' +
+          '<figure class="training-figure"><figcaption><span><i class="run-key"></i>running miles</span><span><i class="lift-key"></i>lifting sessions</span></figcaption>' + chart + '</figure>' +
+          '<p class="training-insight">' + insight + '</p>';
+      };
+      var sampleAthletics = {
+        weekly_training: [{run_miles: 3.2, lift_sessions: 1}, {run_miles: 5.1, lift_sessions: 2}, {run_miles: 4.0, lift_sessions: 1}, {run_miles: 6.4, lift_sessions: 2}],
+        this_week_miles: 6.4, this_week_lift_sessions: 2, this_month_miles: 18.7, this_month_lift_sessions: 6
+      };
       fetch('/__athletics/summary', { headers: { 'Accept': 'application/json' } })
         .then(function (r) { return r.ok ? r.json() : null; })
         .then(function (s) {
-          if (!s || !s.ok) { athleticsLive.style.display = 'none'; return; }
-          var fmt = function (n) { return (n || 0).toLocaleString('en-US'); };
-          var weekly = s.weekly_miles || [], spark = '';
-          if (weekly.length > 1) {
-            var max = Math.max.apply(null, weekly) || 1, W = 100, H = 30, n = weekly.length;
-            var pts = weekly.map(function (v, i) {
-              return ((i / (n - 1)) * W).toFixed(1) + ',' + (H - (v / max) * H).toFixed(1);
-            }).join(' ');
-            spark = '<svg class="spark" viewBox="0 0 ' + W + ' ' + H + '" preserveAspectRatio="none" aria-hidden="true"><polyline fill="none" stroke="var(--accent)" stroke-width="1.5" points="' + pts + '"/></svg>';
-          }
-          var lm = s.lift_maxes || {};
-          athleticsLive.innerHTML =
-            '<div class="ml-h">running</div>' +
-            '<div class="stats">' +
-              '<div class="stat"><span class="n">' + fmt(s.runs) + '</span><span class="l">runs</span></div>' +
-              '<div class="stat"><span class="n">' + fmt(Math.round(s.run_miles)) + '</span><span class="l">miles</span></div>' +
-              '<div class="stat"><span class="n">' + (s.longest_run_mi || 0) + '</span><span class="l">longest · mi</span></div>' +
-              '<div class="stat"><span class="n">' + (s.since || '—') + '</span><span class="l">since</span></div>' +
-            '</div>' + spark +
-            '<div class="ml-h ml-h2">lifting</div>' +
-            '<div class="stats">' +
-              '<div class="stat"><span class="n">' + fmt(s.lift_sessions) + '</span><span class="l">sessions</span></div>' +
-              '<div class="stat"><span class="n">' + (lm.bench || 0) + '</span><span class="l">bench · lb</span></div>' +
-              '<div class="stat"><span class="n">' + (lm.squat || 0) + '</span><span class="l">squat · lb</span></div>' +
-              '<div class="stat"><span class="n">' + (lm.deadlift || 0) + '</span><span class="l">deadlift · lb</span></div>' +
-            '</div>' +
-            '<p class="cap"><span class="live-dot"></span>live from Athletic Analytics · running &amp; lifting</p>';
+          renderAthletics(s && s.ok ? s : sampleAthletics, !s || !s.ok);
         })
-        .catch(function () { athleticsLive.style.display = 'none'; });
+        .catch(function () { renderAthletics(sampleAthletics, true); });
     }
 
     /* Library shelf preview — pulls Gordon's favorited books straight from

@@ -22,6 +22,13 @@ Live at <https://gordongouger.com>.
 - `resume.html` — interactive résumé (plus a PDF in `resume/`)
 - `contact.html` — the form
 
+## Product design
+
+The shared visual-story standard for this site and its personal-project
+companions lives in [VISUAL_STORY.md](VISUAL_STORY.md). New charts and widgets
+must answer a clear question, explain their evidence, and remain useful on a
+phone.
+
 ## Local development
 
 No build step. Just serve the directory:

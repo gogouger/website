@@ -48,10 +48,10 @@
   setTheme(saved);
 
   document.addEventListener('DOMContentLoaded', function () {
-    /* resolve app links (Books / Meron / login) to the right apex for
+    /* resolve app links (Library / Athletic Analytics / login) to the right apex for
        this environment. Handles both the dev/local *.ggouger.localhost
        and prod *.gordongouger.com — when we're already on a subdomain
-       (e.g. opened from meron.<apex>), strip it so the data-app prefix
+       (e.g. opened from athletic-analytics.<apex>), strip it so the data-app prefix
        is appended to the apex, not double-stacked. */
     var _base = (function () {
       var h = location.hostname;
@@ -63,94 +63,40 @@
       el.href = location.protocol + '//' + el.getAttribute('data-app') + '.' + _base + '/';
     });
 
-    /* ---- single sign-on: INLINE login (no separate page) ----
-       One Authelia session, scoped to ggouger.localhost, spans the site + Meron +
-       Books. The /__auth* paths are same-origin proxies to Authelia (see Caddyfile),
-       so we log in/out from a modal right here and just update the button. Falls back
-       to the Authelia portal link if the site is opened outside the caddy stack. */
+    /* Keep the portfolio's utility navigation consistent with every app. */
+    var siteHead = document.querySelector('.site-head');
+    var projectsLink = siteHead && siteHead.querySelector('.nav a[href$="projects.html"]');
+    if (projectsLink) projectsLink.textContent = 'all projects';
+    if (siteHead && !siteHead.querySelector('.site-auth')) {
+      var siteAuth = document.createElement('a');
+      siteAuth.className = 'site-auth';
+      siteAuth.setAttribute('data-app', 'auth');
+      siteAuth.href = location.protocol + '//auth.' + _base + '/';
+      siteAuth.textContent = 'owner sign in';
+      siteHead.appendChild(siteAuth);
+    }
+
+    /* ---- single sign-on ----
+       Every app delegates authentication to the central Authelia portal so passkeys,
+       recovery, lockout, and session policy are enforced in exactly one place. */
     (function () {
       var authEls = document.querySelectorAll('[data-app="auth"]');
       if (!authEls.length) return;
       var authHost = location.protocol + '//auth.' + _base;
-      var inlineActive = false, authed = false, modal = null, pendingHref = null;
+      var authed = false;
 
       function renderButton(d) {
         var here = encodeURIComponent(location.href);
         authed = !!(d && d.authentication_level >= 1);
         authEls.forEach(function (el) {
-          el.textContent = authed ? (d.username ? ('log out (' + d.username + ')') : 'log out') : 'log in';
+          el.textContent = authed ? (d.username ? (d.username + ' · sign out') : 'sign out') : 'owner sign in';
           el.href = authed ? (authHost + '/logout?rd=' + here) : (authHost + '/?rd=' + here); /* no-JS fallback */
         });
       }
       function refresh() {
         return fetch('/__authstate', { credentials: 'include', headers: { 'Accept': 'application/json' } })
           .then(function (r) { if (!r.ok) throw 0; return r.json(); })
-          .then(function (s) { inlineActive = true; renderButton(s && s.data); });
-      }
-
-      function buildModal() {
-        if (modal) return modal;
-        modal = document.createElement('div');
-        modal.className = 'login-modal';
-        /* critical layout set inline so it's ALWAYS a centered overlay, even if a
-           stale/cached styles.css is missing the newer .login-* rules. */
-        modal.style.cssText = 'position:fixed;inset:0;z-index:60;display:none;align-items:center;justify-content:center;padding:20px;background:rgba(8,10,9,.55)';
-        modal.innerHTML =
-          '<div class="login-card" role="dialog" aria-modal="true" aria-label="Log in">' +
-            '<button class="login-x" type="button" aria-label="Close">×</button>' +
-            '<p class="label"><span class="hash">#</span> <span>log in</span></p>' +
-            '<p class="login-sub">One login for the site, Meron &amp; Athenaeum.</p>' +
-            '<form class="login-form" novalidate>' +
-              '<div class="field"><label for="lm-user">Username</label>' +
-                '<input id="lm-user" name="username" autocomplete="username" autocapitalize="off" spellcheck="false" required></div>' +
-              '<div class="field"><label for="lm-pass">Password</label>' +
-                '<input id="lm-pass" name="password" type="password" autocomplete="current-password" required></div>' +
-              '<p class="login-err" role="alert" hidden></p>' +
-              '<button class="btn" type="submit">Sign in</button>' +
-            '</form>' +
-          '</div>';
-        document.body.appendChild(modal);
-        /* card + chrome styled inline too (theme-aware via CSS vars), so the overlay
-           renders correctly without depending on the cached stylesheet. */
-        modal.querySelector('.login-card').style.cssText = 'position:relative;width:100%;max-width:360px;background:var(--bg);color:var(--fg);border:1px solid var(--line2);border-radius:8px;padding:24px;box-shadow:0 18px 50px rgba(0,0,0,.3)';
-        modal.querySelector('.login-x').style.cssText = 'position:absolute;top:8px;right:10px;background:none;border:0;color:var(--muted);font-size:22px;line-height:1;cursor:pointer;padding:2px 7px';
-        modal.querySelector('.login-sub').style.cssText = 'color:var(--muted);font-size:12.5px;margin:0 0 18px';
-        var form = modal.querySelector('.login-form');
-        var err = modal.querySelector('.login-err');
-        err.style.cssText = 'color:#d9534f;font-size:12.5px;margin:0 0 12px';
-        var sBtn = form.querySelector('button[type=submit]');
-        sBtn.style.cssText = 'width:100%;background:none;cursor:pointer;margin-top:2px';
-        var close = function () { modal.style.display = 'none'; modal.classList.remove('show'); pendingHref = null; };
-        modal.addEventListener('mousedown', function (e) { if (e.target === modal) close(); });
-        modal.querySelector('.login-x').addEventListener('click', close);
-        document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && modal.style.display === 'flex') close(); });
-        form.addEventListener('submit', function (e) {
-          e.preventDefault(); err.hidden = true;
-          sBtn.disabled = true; sBtn.textContent = 'signing in…';
-          fetch('/__authlogin', {
-            method: 'POST', credentials: 'include',
-            headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
-            body: JSON.stringify({ username: form.username.value, password: form.password.value, keepMeLoggedIn: true, requestMethod: 'GET', targetURL: location.href })
-          })
-            .then(function (r) { return r.json().then(function (j) { return { ok: r.ok, j: j }; }); })
-            .then(function (res) {
-              if (res.ok && res.j && res.j.status === 'OK') {
-                var go = pendingHref; close(); form.reset();
-                if (go) { location.href = go; } else { refresh(); }
-                return;
-              }
-              throw new Error((res.j && res.j.message) || 'Invalid username or password');
-            })
-            .catch(function (e2) { err.textContent = (e2 && e2.message) || 'Login failed'; err.hidden = false; })
-            .finally(function () { sBtn.disabled = false; sBtn.textContent = 'Sign in'; });
-        });
-        return modal;
-      }
-      function openModal(href) {
-        pendingHref = href || null;
-        var m = buildModal();
-        m.style.display = 'flex'; m.classList.add('show');
-        setTimeout(function () { var u = modal.querySelector('#lm-user'); if (u) u.focus(); }, 30);
+          .then(function (s) { renderButton(s && s.data); });
       }
       function logout() {
         fetch('/__authlogout', { method: 'POST', credentials: 'include', headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' }, body: '{}' })
@@ -160,13 +106,13 @@
 
       authEls.forEach(function (el) {
         el.addEventListener('click', function (e) {
-          if (!inlineActive) return;               /* outside caddy stack: use the href fallback */
           e.preventDefault();
-          if (authed) logout(); else openModal(null);
+          if (authed) logout();
+          else location.href = authHost + '/?rd=' + encodeURIComponent(location.href);
         });
       });
 
-      refresh().catch(function () { /* same-origin auth proxy unreachable; keep portal-link fallback */ });
+      refresh().catch(function () { renderButton(null); });
     })();
 
     var btn = document.getElementById('themeBtn');
@@ -179,9 +125,29 @@
     var trackerEmbed = document.getElementById('trackerEmbed');
     if (trackerEmbed) {
       var localTracker = location.hostname === 'localhost' || location.hostname === '127.0.0.1';
+      trackerEmbed.addEventListener('load', function () {
+        /* The preview is a poster, not a second scrollable website. Because the
+           production embed is served from this origin, trim it to the terrain
+           canvas and size that canvas to the frame. The full tracker remains
+           interactive behind the adjacent link. */
+        try {
+          var frameDoc = trackerEmbed.contentDocument;
+          if (!frameDoc || !frameDoc.head) return;
+          var previewStyle = frameDoc.createElement('style');
+          previewStyle.textContent =
+            'html,body{height:100%!important;overflow:hidden!important}' +
+            'body.embed main{height:100%!important;padding:0!important}' +
+            'body.embed .tracker-grid,body.embed .poster-pane,body.embed .ribbon-lab-pane{height:100%!important;min-height:0!important}' +
+            'body.embed .ribbon-lab-heading,body.embed .ribbon-progress-strip,body.embed .ribbon-insights,body.embed .terrain-switcher,body.embed .ribbon-key,body.embed .ribbon-help,body.embed .range-photo-heading,body.embed .range-photo-grid{display:none!important}' +
+            'body.embed .terrain-webgl-shell{height:100%!important;min-height:0!important;border:0!important;border-radius:0!important;box-shadow:none!important}' +
+            'body.embed .terrain-rotate-note,body.embed .terrain-axis-key{display:none!important}';
+          frameDoc.head.appendChild(previewStyle);
+          trackerEmbed.contentWindow.dispatchEvent(new Event('resize'));
+        } catch (e) { /* Cross-origin local fallback keeps its normal embed view. */ }
+      });
       trackerEmbed.src = localTracker
-        ? 'http://localhost:8001/?embed=1&widget=ribbon-lab&v=terrain-scene-1'
-        : '/14ers-app/?embed=1&widget=ribbon-lab&v=terrain-scene-1';
+        ? 'http://localhost:8001/?embed=1&widget=ribbon-lab&v=preview-2'
+        : '/14ers-app/?embed=1&widget=ribbon-lab&v=preview-2';
     }
 
     /* ---- scramble-in on load + hover ---- */
@@ -233,53 +199,60 @@
       setInterval(function () { ci = (ci + 1) % states.length; scramble(cur, states[ci], 600); }, 4200);
     }
 
-    /* live Meron telemetry (project page) — safe aggregates via the same-origin
-       /__meron/summary proxy; renders stat cards + a weekly-mileage sparkline. */
-    var meronLive = document.getElementById('meron-live');
-    if (meronLive) {
-      fetch('/__meron/summary', { headers: { 'Accept': 'application/json' } })
+    /* Live Athletic Analytics telemetry — safe, aligned weekly aggregates only.
+       The preview deliberately tells a combined training story without exposing
+       routes, dates, individual activities, or the private application shell. */
+    var athleticsLive = document.getElementById('athletics-live');
+    if (athleticsLive) {
+      var renderAthletics = function (s, sample) {
+        var fmt = function (n) { return (n || 0).toLocaleString('en-US'); };
+        var training = Array.isArray(s.weekly_training) && s.weekly_training.length
+          ? s.weekly_training
+          : (s.weekly_miles || []).map(function (miles) { return { run_miles: miles, lift_sessions: 0 }; });
+        var recent = training.slice(-4);
+        var recentMiles = recent.reduce(function (sum, week) { return sum + (Number(week.run_miles) || 0); }, 0);
+        var recentLifts = recent.reduce(function (sum, week) { return sum + (Number(week.lift_sessions) || 0); }, 0);
+        var maxMiles = Math.max.apply(null, training.map(function (week) { return Number(week.run_miles) || 0; }).concat([1]));
+        var maxLifts = Math.max.apply(null, training.map(function (week) { return Number(week.lift_sessions) || 0; }).concat([1]));
+        var W = 176, runTop = 5, runH = 36, liftTop = 54, liftH = 12;
+        var chart = training.length ? '<svg class="training-rhythm" viewBox="0 0 ' + W + ' 72" role="img" aria-label="Recent weekly running miles and lifting sessions">' +
+          '<line class="training-grid" x1="0" x2="' + W + '" y1="46" y2="46"/><line class="training-grid" x1="0" x2="' + W + '" y1="69" y2="69"/>' +
+          training.map(function (week, i) {
+            var slot = W / training.length, x = i * slot + Math.max(1, slot * .18), width = Math.max(2, slot * .64);
+            var miles = Number(week.run_miles) || 0, lifts = Number(week.lift_sessions) || 0;
+            var runHeight = miles / maxMiles * runH, liftHeight = lifts / maxLifts * liftH;
+            return '<rect class="run-bar" x="' + x.toFixed(1) + '" y="' + (runTop + runH - runHeight).toFixed(1) + '" width="' + width.toFixed(1) + '" height="' + runHeight.toFixed(1) + '" rx="1"/>' +
+              '<rect class="lift-bar" x="' + x.toFixed(1) + '" y="' + (liftTop + liftH - liftHeight).toFixed(1) + '" width="' + width.toFixed(1) + '" height="' + liftHeight.toFixed(1) + '" rx="1"/>';
+          }).join('') + '</svg>' : '<p class="training-empty">No recent weeks are available yet.</p>';
+        var insight = recentMiles || recentLifts
+          ? 'Last four weeks: ' + recentMiles.toFixed(1) + ' running miles and ' + fmt(recentLifts) + ' lift sessions.'
+          : 'No recent training has been recorded in the four-week window.';
+        athleticsLive.innerHTML =
+          '<div class="preview-data-line"><span>' + (sample ? 'illustrative sample state' : 'last 16 weeks · aggregate only') + '</span><span>' + (sample ? 'sample' : '<i class="live-dot"></i>live') + '</span></div>' +
+          '<div class="training-summary"><div><span class="training-number">' + (Number(s.this_week_miles) || 0).toFixed(1) + '</span><span>mi this week</span></div><div><span class="training-number">' + fmt(s.this_week_lift_sessions) + '</span><span>lifts this week</span></div><div><span class="training-number">' + (Number(s.this_month_miles) || 0).toFixed(1) + '</span><span>mi this month</span></div><div><span class="training-number">' + fmt(s.this_month_lift_sessions) + '</span><span>lifts this month</span></div></div>' +
+          '<figure class="training-figure"><figcaption><span><i class="run-key"></i>running miles</span><span><i class="lift-key"></i>lifting sessions</span></figcaption>' + chart + '</figure>' +
+          '<p class="training-insight">' + insight + '</p>';
+      };
+      var sampleAthletics = {
+        weekly_training: [{run_miles: 3.2, lift_sessions: 1}, {run_miles: 5.1, lift_sessions: 2}, {run_miles: 4.0, lift_sessions: 1}, {run_miles: 6.4, lift_sessions: 2}],
+        this_week_miles: 6.4, this_week_lift_sessions: 2, this_month_miles: 18.7, this_month_lift_sessions: 6
+      };
+      fetch('/__athletics/summary', { headers: { 'Accept': 'application/json' } })
         .then(function (r) { return r.ok ? r.json() : null; })
         .then(function (s) {
-          if (!s || !s.ok) { meronLive.style.display = 'none'; return; }
-          var fmt = function (n) { return (n || 0).toLocaleString('en-US'); };
-          var weekly = s.weekly_miles || [], spark = '';
-          if (weekly.length > 1) {
-            var max = Math.max.apply(null, weekly) || 1, W = 100, H = 30, n = weekly.length;
-            var pts = weekly.map(function (v, i) {
-              return ((i / (n - 1)) * W).toFixed(1) + ',' + (H - (v / max) * H).toFixed(1);
-            }).join(' ');
-            spark = '<svg class="spark" viewBox="0 0 ' + W + ' ' + H + '" preserveAspectRatio="none" aria-hidden="true"><polyline fill="none" stroke="var(--accent)" stroke-width="1.5" points="' + pts + '"/></svg>';
-          }
-          var lm = s.lift_maxes || {};
-          meronLive.innerHTML =
-            '<div class="ml-h">running</div>' +
-            '<div class="stats">' +
-              '<div class="stat"><span class="n">' + fmt(s.runs) + '</span><span class="l">runs</span></div>' +
-              '<div class="stat"><span class="n">' + fmt(Math.round(s.run_miles)) + '</span><span class="l">miles</span></div>' +
-              '<div class="stat"><span class="n">' + (s.longest_run_mi || 0) + '</span><span class="l">longest · mi</span></div>' +
-              '<div class="stat"><span class="n">' + (s.since || '—') + '</span><span class="l">since</span></div>' +
-            '</div>' + spark +
-            '<div class="ml-h ml-h2">lifting</div>' +
-            '<div class="stats">' +
-              '<div class="stat"><span class="n">' + fmt(s.lift_sessions) + '</span><span class="l">sessions</span></div>' +
-              '<div class="stat"><span class="n">' + (lm.bench || 0) + '</span><span class="l">bench · lb</span></div>' +
-              '<div class="stat"><span class="n">' + (lm.squat || 0) + '</span><span class="l">squat · lb</span></div>' +
-              '<div class="stat"><span class="n">' + (lm.deadlift || 0) + '</span><span class="l">deadlift · lb</span></div>' +
-            '</div>' +
-            '<p class="cap"><span class="live-dot"></span>live from the Meron dashboard · running &amp; lifting</p>';
+          renderAthletics(s && s.ok ? s : sampleAthletics, !s || !s.ok);
         })
-        .catch(function () { meronLive.style.display = 'none'; });
+        .catch(function () { renderAthletics(sampleAthletics, true); });
     }
 
-    /* Athenaeum shelf preview — pulls Gordon's favorited books straight from
-       the public books API (no proxy needed; CORS is open). Renders
+    /* Library shelf preview — pulls Gordon's favorited books straight from
+       the public Library API (no proxy needed; CORS is open). Renders
        all-time favorites with a gold border, then a top-5 per genre. */
-    var athLive = document.getElementById('athenaeum-live');
-    if (athLive) {
-      var BOOKS_HOST = 'https://books.gordongouger.com';
+    var libraryLive = document.getElementById('library-live');
+    if (libraryLive) {
+      var BOOKS_HOST = 'https://library.gordongouger.com';
       var USERNAME = 'ggouger';
       var USER_ID = 2;
-      var GENRES = ['Religious', 'Fiction', 'Other'];
 
       var esc = function (s) {
         var d = document.createElement('div'); d.textContent = s || ''; return d.innerHTML;
@@ -311,53 +284,30 @@
         .then(function (r) { return r.ok ? r.json() : null; })
         .then(function (d) {
           if (!d || !d.books || !d.books.length) {
-            athLive.style.display = 'none';
+            libraryLive.style.display = 'none';
             return;
           }
           var books = d.books;
           var allTime = books.filter(function (b) { return b.is_all_time_fav === 1; });
-
-          var byGenre = {};
-          GENRES.forEach(function (g) { byGenre[g] = []; });
-          books.forEach(function (b) {
-            var g = (b.manual_category && byGenre[b.manual_category]) ? b.manual_category : 'Other';
-            byGenre[g].push(b);
-          });
           var tier = function (b) {
             if (b.is_all_time_fav === 1) return 0;
             if (b.is_second_fav === 1) return 1;
             return 2;
           };
-          GENRES.forEach(function (g) {
-            byGenre[g].sort(function (a, b) {
-              var t = tier(a) - tier(b);
-              if (t !== 0) return t;
-              var ar = a.rating || 0, br = b.rating || 0;
-              if (br !== ar) return br - ar;
-              return (a.sort_title || a.title || '').localeCompare(b.sort_title || b.title || '');
-            });
-            byGenre[g] = byGenre[g].slice(0, 5);
+          var ordered = books.slice().sort(function (a, b) {
+            var t = tier(a) - tier(b);
+            if (t !== 0) return t;
+            var ar = a.rating || 0, br = b.rating || 0;
+            if (br !== ar) return br - ar;
+            return (a.sort_title || a.title || '').localeCompare(b.sort_title || b.title || '');
           });
-
-          var html = '';
-          if (allTime.length) {
-            html += '<div class="ml-h">all-time favorites</div>';
-            html += '<div class="ath-row">';
-            allTime.forEach(function (b) { html += bookCard(b); });
-            html += '</div>';
-          }
-          GENRES.forEach(function (g) {
-            var items = byGenre[g];
-            if (!items.length) return;
-            html += '<div class="ml-h ml-h2">top ' + items.length + ' &middot; ' + g.toLowerCase() + '</div>';
-            html += '<div class="ath-row">';
-            items.forEach(function (b) { html += bookCard(b); });
-            html += '</div>';
-          });
-          html += '<p class="cap"><span class="live-dot"></span>live from the Athenaeum DB</p>';
-          athLive.innerHTML = html;
+          var shelf = allTime.concat(ordered.filter(function (b) { return allTime.indexOf(b) < 0; })).slice(0, 6);
+          var html = '<div class="preview-data-line"><span>' + shelf.length + ' picks from the public shelf</span><span><i class="live-dot"></i>live</span></div><div class="ath-row">';
+          shelf.forEach(function (b) { html += bookCard(b); });
+          html += '</div>';
+          libraryLive.innerHTML = html;
         })
-        .catch(function () { athLive.style.display = 'none'; });
+        .catch(function () { libraryLive.style.display = 'none'; });
     }
 
     /* Colorado 14er project-page preview — the full list lives on the dedicated

@@ -4,19 +4,19 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="robots" content="index, follow, noimageindex">
-<title>Athenaeum — Gordon Gouger</title>
+<title>Library — Gordon Gouger</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="styles.css?v=16">
-<script src="site.js?v=16" defer></script>
-<meta name="description" content="Athenaeum — Gordon Gouger's self-hosted reading library: books read and owned, browsable publicly.">
-<meta property="og:title" content="Athenaeum — Gordon Gouger">
-<meta property="og:description" content="Athenaeum — Gordon Gouger's self-hosted reading library: books read and owned, browsable publicly.">
-<meta property="og:url" content="https://gordongouger.com/athenaeum.html">
+<link rel="stylesheet" href="styles.css?v=20">
+<script src="site.js?v=20" defer></script>
+<meta name="description" content="Library — Gordon Gouger's self-hosted collection of books read and owned, browsable publicly.">
+<meta property="og:title" content="Library — Gordon Gouger">
+<meta property="og:description" content="Library — Gordon Gouger's self-hosted collection of books read and owned, browsable publicly.">
+<meta property="og:url" content="https://gordongouger.com/library.html">
 <meta property="og:type" content="website">
 <meta name="twitter:card" content="summary">
-<link rel="canonical" href="https://gordongouger.com/athenaeum.html">
+<link rel="canonical" href="https://gordongouger.com/library.html">
 </head>
 <body>
   <div class="wrap">
@@ -38,15 +38,22 @@
       <span class="clock" id="clock">--:--:-- MT</span>
     </header>
 
-    <h1 class="page-title scram">Athenaeum</h1>
+    <h1 class="page-title scram">Library</h1>
     <p class="role">A self-hosted reading library</p>
 
     <div class="prose">
-      <p class="lead-text">Athenaeum is the shelf of books I&rsquo;ve read and own, browsable publicly. It tracks reading status (audiobook / physical / ebook), groups books by series, syncs covers and metadata from Hardcover, and pushes my library out to Kobo / KOReader over OPDS so I can pull a book onto an e-reader without re-uploading anything.</p>
-      <p>Below: my all-time favorites &mdash; the books I&rsquo;d hand to a friend &mdash; followed by the top 5 in each genre. Live from the Athenaeum DB.</p>
+      <p class="lead-text">Library is the shelf of books I&rsquo;ve read and own, browsable publicly. It tracks reading status (audiobook / physical / ebook), groups books by series, syncs covers and metadata from Hardcover, and pushes my library out to Kobo / KOReader over OPDS so I can pull a book onto an e-reader without re-uploading anything.</p>
+      <p>Below is a small live shelf of the books I&rsquo;d hand to a friend. The complete catalog, reading status, and formats live in Library.</p>
     </div>
 
-    <div id="athenaeum-live" class="athenaeum-live"><p class="cap">loading shelves&hellip;</p></div>
+    <section class="app-preview app-preview-books" aria-label="Live Library preview">
+      <div class="app-preview-head">
+        <div><p class="preview-kicker">Live preview</p><h2>Favorite shelf</h2></div>
+        <a href="https://library.gordongouger.com" data-app="library">Browse library ↗</a>
+      </div>
+      <div id="library-live" class="library-live"><p class="cap">loading shelf&hellip;</p></div>
+      <p class="preview-note">A small selection from the public library; open Library for every shelf, series, and format.</p>
+    </section>
 
     <section>
       <p class="label"><span class="hash">#</span> <span class="scram">details</span></p>
@@ -56,7 +63,8 @@
     </section>
 
     <div class="btnrow">
-      <a class="btn" href="https://books.gordongouger.com" data-app="books" target="_blank" rel="noopener">Open Athenaeum (live)</a>
+      <a class="btn" href="https://library.gordongouger.com" data-app="library" target="_blank" rel="noopener">Open Library</a>
+      <a class="btn ghost" href="https://github.com/gogouger/library" target="_blank" rel="noopener">View on GitHub</a>
     </div>
 
     <div class="colophon">

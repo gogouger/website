@@ -8,7 +8,7 @@ Live at <https://gordongouger.com>.
 
 - **HTML / CSS / vanilla JS** — no build step, no framework
 - **[Caddy](https://caddyserver.com/)** serves the files in production (behind Cloudflare's proxy)
-- Inline single sign-on modal hits same-origin `/__auth*` proxies (configured in [infra/Caddyfile](https://github.com/gogouger/infra)) so one login spans the site, [Meron](https://github.com/gogouger/meron), and Athenaeum
+- Central passkey sign-in at `auth.gordongouger.com` issues one shared session for Finance, the site, [Athletic Analytics](https://github.com/gogouger/athletic-analytics), [Library](https://github.com/gogouger/library), and the 14er tracker. Same-origin `/__authstate` and `/__authlogout` proxies expose only session state and logout.
 - A small self-hosted [contact form endpoint](https://github.com/gogouger/infra) handles `POST /contact` (FastAPI, multipart, attaches up to 3 files per submission via iCloud SMTP)
 
 ## Pages
@@ -16,7 +16,8 @@ Live at <https://gordongouger.com>.
 - `index.html` — landing (what I do, selected work, writing, résumé)
 - `about.html` — longer bio + photos
 - `projects.html` — project detail
-- `meron.html` — Meron's marketing page (lives here instead of meron.gordongouger.com)
+- `athletic-analytics.html` — Athletic Analytics’ marketing page and live training preview
+- `library.html` — Library’s marketing page and live public shelf preview
 - `writing.html` — notes, papers, talks
 - `resume.html` — interactive résumé (plus a PDF in `resume/`)
 - `contact.html` — the form
@@ -31,7 +32,7 @@ python3 -m http.server 8000
 # open http://localhost:8000
 ```
 
-Caddy / inline-SSO bits won't work locally without the rest of the stack (Authelia, Meron, etc.) running — but the static pages render fine.
+Caddy / inline-SSO bits won't work locally without the rest of the stack (Authelia, Athletic Analytics, etc.) running — but the static pages render fine.
 
 ## Deployment
 

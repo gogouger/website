@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="index, follow, noimageindex">
+<title>Athletic Analytics — Gordon Gouger</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css?v=20">
+<script src="site.js?v=20" defer></script>
+<meta name="description" content="Athletic Analytics — a self-hosted hybrid run & lift training dashboard by Gordon Gouger.">
+<meta property="og:title" content="Athletic Analytics — Gordon Gouger">
+<meta property="og:description" content="Athletic Analytics — a self-hosted hybrid run & lift training dashboard by Gordon Gouger.">
+<meta property="og:url" content="https://gordongouger.com/athletic-analytics.html">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary">
+<link rel="canonical" href="https://gordongouger.com/athletic-analytics.html">
+</head>
+<body>
+  <div class="wrap">
+    <header class="site-head">
+      <a class="monogram" href="index.html" aria-label="Gordon Gouger — home">
+        <svg viewBox="0 0 100 100" role="img" aria-hidden="true" fill="none" stroke-width="6.5" stroke-linecap="round" stroke-linejoin="round">
+          <path class="g-accent" d="M77.71 34 A32 32 0 1 0 82 50 L60 50"/>
+          <path class="g-ink" d="M65.59 41 A18 18 0 1 0 68 50 L54 50"/>
+        </svg>
+      </a>
+      <nav class="nav">
+        <a href="index.html">home</a>
+        <a href="about.html">about</a>
+        <a href="projects.html" aria-current="page">projects</a>
+        <a href="writing.html">writing</a>
+        <a href="resume.html">résumé</a>
+        <a href="contact.html">contact</a>
+      </nav>
+      <span class="clock" id="clock">--:--:-- MT</span>
+    </header>
+
+    <h1 class="page-title scram">Athletic Analytics</h1>
+    <p class="role">A private run &amp; lift dashboard</p>
+
+    <div class="prose">
+      <p class="lead-text">Athletic Analytics is a hybrid training dashboard — built for athletes who run <em>and</em> lift, where no existing tool does both well. It pulls your endurance work (rides, runs, <span class="term" data-note="FIT files — the binary activity format Garmin uses for rides and runs.">FIT files</span>) and your strength training into one view: routes on a map, training-load curves, race predictions, lift-PR progression, and a chat widget that answers questions across both sides of your training.</p>
+      <p>It started because the existing options forced you to pick one sport: an endurance silo (Strava) or a lifting silo (Hevy, Strong). Athletic Analytics treats your training as one program. Everything runs locally on your own server; the data stays yours.</p>
+    </div>
+
+    <section class="app-preview app-preview-athletics" aria-label="Live Athletic Analytics preview">
+      <div class="app-preview-head">
+        <div><p class="preview-kicker">Live preview</p><h2>Training at a glance</h2></div>
+        <a href="https://athletic-analytics.gordongouger.com" data-app="athletic-analytics">Open Athletic Analytics ↗</a>
+      </div>
+      <div id="athletics-live" class="athletics-live"><p class="cap">loading training telemetry…</p></div>
+      <p class="preview-note">A compact read from Athletic Analytics’ public overview; routes and full history stay inside the private app.</p>
+    </section>
+
+    <section>
+      <p class="label"><span class="hash">#</span> <span class="scram">details</span></p>
+      <div class="entry"><span class="t">Stack</span><span class="lead"></span><span class="val">Python · Flask · SQLite · Leaflet</span></div>
+      <div class="entry"><span class="t">Status</span><span class="lead"></span><span class="val">live · self-hosted</span></div>
+    </section>
+
+    <div class="btnrow">
+      <a class="btn" href="https://athletic-analytics.gordongouger.com" data-app="athletic-analytics" target="_blank" rel="noopener">Open Athletic Analytics</a>
+      <a class="btn ghost" href="https://github.com/gogouger/athletic-analytics" target="_blank" rel="noopener">View on GitHub</a>
+    </div>
+
+    <div class="colophon">
+      <a href="https://auth.gordongouger.com" data-app="auth">log in</a>
+      <button class="toggle" id="themeBtn">dark</button>
+    </div>
+  </div>
+
+  <div class="margin-note" id="marginNote"></div>
+</body>
+</html>
